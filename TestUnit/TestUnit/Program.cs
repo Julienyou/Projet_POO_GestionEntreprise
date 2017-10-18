@@ -16,6 +16,14 @@ namespace TestUnit
         {
             Assert.That(Julien.GetFirstname(), Is.EqualTo("Julien"));
         }
+
+        [SetUp()]
+        public void Init()
+        {
+            TestEmployee Julien = TestEmployee("Julien", "Beard", 30000000, 15172);
+        }
+
+
     }
 
     [TestFixture()]
