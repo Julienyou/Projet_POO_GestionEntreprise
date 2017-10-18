@@ -4,13 +4,24 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
-using Gestion_Entreprise;
 
 namespace TestUnit
 {
     [TestFixture()]
-    public class Employee
+    public class Client
     {
-        Assert.That();
+        private Client client;
+
+        [SetUp()]
+        public void Init()
+        {
+            client = new Client("Juju & C0");
+        }
+
+        [Test()]
+        public void TestGetName()
+        {
+            Assert.That(client.GetName(), Is.EqualTo("Juju & C0"));
+        }
     }
 }
