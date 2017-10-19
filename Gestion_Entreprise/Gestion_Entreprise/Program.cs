@@ -47,7 +47,7 @@ namespace Gestion_Entreprise
 
         public int GetSalary(int year)
         {
-            return 0;            
+            return this.salary_dico[year];            
         }
     }
 
