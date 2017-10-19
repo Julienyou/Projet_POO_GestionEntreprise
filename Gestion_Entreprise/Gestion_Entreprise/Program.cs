@@ -25,7 +25,7 @@ namespace Gestion_Entreprise
             this.company = company;
         }
 
-        public virtual int ComputeSalary()
+        public virtual int ComputeSalary(int year)
         {
             return 0;
         }
@@ -53,11 +53,45 @@ namespace Gestion_Entreprise
 
     class Manager : Employee
     {
-      ///  private List<Consultant> consultant = new List<Consultant>;
+        private List<Consultant> consultants = new List<Consultant>;
 
         public Manager(string firstname, string lastname, int salary, int id, string company) : base(firstname, lastname, salary, id, company)
         {
+        }
 
+        public override int ComputeSalary(int year)
+        {
+            salary = salary + 500 * consultants.Count;
+            AddSalary(year, salary);
+            return salary;
+        }
+
+        public void AddConsultant(Consultant consultant, int id)
+        {
+            consultants.Add(consultant);
+        }
+
+        public void RemoveConsultant(Consultant consultant)
+        {
+            consultants.Remove(consultant);
+        }
+
+        public string GetReport()
+        {
+
+        }
+
+    }
+
+    class Director : Employee
+    {
+        public Director(string firstname, string lastname, int salary, int id, string company) : base(firstname, lastname, salary, id, company)
+        {
+        }
+
+        public override int ComputeSalary(int year)
+        {
+            return salary;
         }
     }
 
@@ -130,8 +164,8 @@ namespace TestUnit
         {
             Julien = new Gestion_Entreprise.Manager("Julien", "Beard", 3000, 15172, "Name_company");
             Julien.AddSalary(2017, 3400);
-   //         Ludovic = new Gestion_Entreprise.Consultant("Ludovic", "Merel", 2500, 14555, "Name_company");
-   //         Julien.AddConsultant(Ludovic, 14555);
+            //         Ludovic = new Gestion_Entreprise.Consultant("Ludovic", "Merel", 2500, 14555, "Name_company");
+            //         Julien.AddConsultant(Ludovic, 14555);
         }
 
         [Test()]
@@ -152,35 +186,73 @@ namespace TestUnit
             Assert.That(Julien.GetSalary(2017), Is.EqualTo(3400));
         }
 
-     /*   [Test()]
-        public void TestGetReport()
-        {
-            Assert.That(Julien.GetReport(), Is.EqualTo(3400));
-        }
+        /*   [Test()]
+           public void TestGetReport()
+           {
+               Assert.That(Julien.GetReport(), Is.EqualTo(3400));
+           }
 
-        [Test()]
-        public void TestAddConsultant()
-        {
-            Assert.That(Julien.AddConsultant(Ludovic), Is.EqualTo(3400));
-        }*/
+           [Test()]
+           public void TestAddConsultant()
+           {
+               Assert.That(Julien.AddConsultant(Ludovic), Is.EqualTo(3400));
+           }*/
 
     }
 
     [TestFixture()]
-    public class TestClient
+    public class TestDirector
     {
-        private Gestion_Entreprise.Client client;
+        private Gestion_Entreprise.Director Bastien;
 
         [SetUp()]
         public void Init()
         {
-            client = new Gestion_Entreprise.Client("Juju & C0");
+            Bastien = new Gestion_Entreprise.Director("Bastien", "Paul", 3000, 15172, "Name_company");
+            Bastien.AddSalary(2017, 3400);
         }
 
         [Test()]
-        public void TestGetName()
+        public void TestGetFirstname()
         {
-            Assert.That(client.GetName(), Is.EqualTo("Juju & C0"));
+            Assert.That(Bastien.GetFirstname(), Is.EqualTo("Bastien"));
+        }
+
+        [Test()]
+        public void TestGetLastname()
+        {
+            Assert.That(Bastien.GetLastname(), Is.EqualTo("Paul"));
+        }
+
+        [Test()]
+        public void TestGetSalary()
+        {
+            Assert.That(Bastien.GetSalary(2017), Is.EqualTo(3400));
+        }
+
+        /*   [Test()]
+           public void TestComputeSalary(int year)
+           {
+               Assert.That(Bastien.ComputeSalary(2017), Is.EqualTo(...); ///à calculer
+           }
+       }*/
+
+        [TestFixture()]
+        public class TestClient
+        {
+            private Gestion_Entreprise.Client client;
+
+            [SetUp()]
+            public void Init()
+            {
+                client = new Gestion_Entreprise.Client("Juju & C0");
+            }
+
+            [Test()]
+            public void TestGetName()
+            {
+                Assert.That(client.GetName(), Is.EqualTo("Juju & C0"));
+            }
         }
     }
 }
