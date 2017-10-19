@@ -66,6 +66,20 @@ namespace Gestion_Entreprise
         }
     }
 
+    class Consultation
+    { 
+        private Client client;
+        private int startPeriode;
+        private int endPeriode;
+
+        public Consultation(Client client, int startPeriode, int endPeriode)
+        { 
+            this.client = client;
+            this.startPeriode = startPeriode;
+            this.endPeriode = endPeriode;
+        }
+    }
+
     class Program
     {
         static void Main(string[] args)
@@ -125,6 +139,22 @@ namespace TestUnit
         public void TestGetName()
         {
             Assert.That(client.GetName(), Is.EqualTo("Juju & C0"));
+        }
+    }
+
+    [TestFixture()]
+    public class TestConsultation
+    {
+        [SetUp()]
+        public void Init()
+        {
+
+        }
+
+        [Test()]
+        public void TestGetClient()
+        {
+
         }
     }
 }
