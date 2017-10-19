@@ -78,6 +78,11 @@ namespace Gestion_Entreprise
             this.startPeriode = startPeriode;
             this.endPeriode = endPeriode;
         }
+
+        public Client GetClient()
+        {
+            return this.client;
+        }
     }
 
     class Program
@@ -145,16 +150,20 @@ namespace TestUnit
     [TestFixture()]
     public class TestConsultation
     {
+        private Gestion_Entreprise.Client client;
+        private Gestion_Entreprise.Consultation consult;
+
         [SetUp()]
         public void Init()
         {
-
+            client = new Gestion_Entreprise.Client("Ludovic");
+            consult = new Gestion_Entreprise.Consultation(client, 12, 13);
         }
 
         [Test()]
         public void TestGetClient()
         {
-
+            Assert.That(consult.GetClient(), Is.EqualTo(client));
         }
     }
 }
