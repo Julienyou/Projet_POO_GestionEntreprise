@@ -51,6 +51,16 @@ namespace Gestion_Entreprise
         }
     }
 
+    class Manager : Employee
+    {
+      ///  private List<Consultant> consultant = new List<Consultant>;
+
+        public Manager(string firstname, string lastname, int salary, int id, string company) : base(firstname, lastname, salary, id, company)
+        {
+
+        }
+    }
+
     class Client
     {
         private string name;
@@ -107,6 +117,52 @@ namespace TestUnit
             Assert.That(Julien.GetSalary(2017), Is.EqualTo(3400));
         }
 
+
+    }
+
+    [TestFixture()]
+    public class TestManager
+    {
+        private Gestion_Entreprise.Manager Julien;
+
+        [SetUp()]
+        public void Init()
+        {
+            Julien = new Gestion_Entreprise.Manager("Julien", "Beard", 3000, 15172, "Name_company");
+            Julien.AddSalary(2017, 3400);
+   //         Ludovic = new Gestion_Entreprise.Consultant("Ludovic", "Merel", 2500, 14555, "Name_company");
+   //         Julien.AddConsultant(Ludovic, 14555);
+        }
+
+        [Test()]
+        public void TestGetFirstname()
+        {
+            Assert.That(Julien.GetFirstname(), Is.EqualTo("Julien"));
+        }
+
+        [Test()]
+        public void TestGetLastname()
+        {
+            Assert.That(Julien.GetLastname(), Is.EqualTo("Beard"));
+        }
+
+        [Test()]
+        public void TestGetSalary()
+        {
+            Assert.That(Julien.GetSalary(2017), Is.EqualTo(3400));
+        }
+
+     /*   [Test()]
+        public void TestGetReport()
+        {
+            Assert.That(Julien.GetReport(), Is.EqualTo(3400));
+        }
+
+        [Test()]
+        public void TestAddConsultant()
+        {
+            Assert.That(Julien.AddConsultant(Ludovic), Is.EqualTo(3400));
+        }*/
 
     }
 
