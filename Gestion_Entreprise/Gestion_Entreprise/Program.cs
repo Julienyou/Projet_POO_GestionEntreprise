@@ -51,6 +51,21 @@ namespace Gestion_Entreprise
         }
     }
 
+    class Client
+    {
+        private string name;
+
+        public Client(string name)
+        {
+            this.name = name;
+        }
+
+        public string GetName()
+        {
+            return this.name;
+        }
+    }
+
     class Program
     {
         static void Main(string[] args)
@@ -70,7 +85,7 @@ namespace TestUnit
         [SetUp()]
         public void Init()
         {
-            Julien =  new Gestion_Entreprise.Employee("Julien", "Beard", 3000, 15172, "Name_company");
+            Julien = new Gestion_Entreprise.Employee("Julien", "Beard", 3000, 15172, "Name_company");
             Julien.AddSalary(2017, 3400);
         }
 
@@ -95,21 +110,21 @@ namespace TestUnit
 
     }
 
-   // [TestFixture()]
-    //public class TestClient
-   // {
-    //    private Client client;
+    [TestFixture()]
+    public class TestClient
+    {
+        private Gestion_Entreprise.Client client;
 
+        [SetUp()]
+        public void Init()
+        {
+            client = new Gestion_Entreprise.Client("Juju & C0");
+        }
 
-     //   [SetUp()]
-     //   public void Init()
-     //   {
-     //       client = new Client("Juju & C0");
-     //   }
-
-      //  [Test()]
-      //  public void TestGetName()
-      //  {
-      //      Assert.That(client.GetName(), Is.EqualTo("Juju & C0"));
-      //  }
+        [Test()]
+        public void TestGetName()
+        {
+            Assert.That(client.GetName(), Is.EqualTo("Juju & C0"));
+        }
     }
+}

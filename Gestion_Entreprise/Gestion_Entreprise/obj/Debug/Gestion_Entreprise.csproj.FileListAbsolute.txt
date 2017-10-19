@@ -7,3 +7,12 @@ C:\Users\Julien\Desktop\ECAM\3BA\Programmation orientée objet\Projet\Gestion_En
 C:\Users\Julien\Desktop\ECAM\3BA\Programmation orientée objet\Projet\Gestion_Entreprise\Gestion_Entreprise\bin\Debug\nunit.framework.xml
 C:\Users\Julien\Desktop\ECAM\3BA\Programmation orientée objet\Projet\Gestion_Entreprise\Gestion_Entreprise\obj\Debug\Gestion_Entreprise.exe
 C:\Users\Julien\Desktop\ECAM\3BA\Programmation orientée objet\Projet\Gestion_Entreprise\Gestion_Entreprise\obj\Debug\Gestion_Entreprise.pdb
+C:\git\Projet_POO_GestionEntreprise\Gestion_Entreprise\Gestion_Entreprise\bin\Debug\Gestion_Entreprise.exe.config
+C:\git\Projet_POO_GestionEntreprise\Gestion_Entreprise\Gestion_Entreprise\bin\Debug\Gestion_Entreprise.exe
+C:\git\Projet_POO_GestionEntreprise\Gestion_Entreprise\Gestion_Entreprise\bin\Debug\Gestion_Entreprise.pdb
+C:\git\Projet_POO_GestionEntreprise\Gestion_Entreprise\Gestion_Entreprise\bin\Debug\nunit.framework.dll
+C:\git\Projet_POO_GestionEntreprise\Gestion_Entreprise\Gestion_Entreprise\bin\Debug\nunit.framework.xml
+C:\git\Projet_POO_GestionEntreprise\Gestion_Entreprise\Gestion_Entreprise\obj\Debug\Gestion_Entreprise.csprojResolveAssemblyReference.cache
+C:\git\Projet_POO_GestionEntreprise\Gestion_Entreprise\Gestion_Entreprise\obj\Debug\Gestion_Entreprise.csproj.CoreCompileInputs.cache
+C:\git\Projet_POO_GestionEntreprise\Gestion_Entreprise\Gestion_Entreprise\obj\Debug\Gestion_Entreprise.exe
+C:\git\Projet_POO_GestionEntreprise\Gestion_Entreprise\Gestion_Entreprise\obj\Debug\Gestion_Entreprise.pdb
