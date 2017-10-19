@@ -1,0 +1,9 @@
+C:\Users\Julien\Desktop\ECAM\3BA\Programmation orientée objet\Projet\Gestion_Entreprise\Gestion_Entreprise\obj\Debug\Gestion_Entreprise.csprojResolveAssemblyReference.cache
+C:\Users\Julien\Desktop\ECAM\3BA\Programmation orientée objet\Projet\Gestion_Entreprise\Gestion_Entreprise\obj\Debug\Gestion_Entreprise.csproj.CoreCompileInputs.cache
+C:\Users\Julien\Desktop\ECAM\3BA\Programmation orientée objet\Projet\Gestion_Entreprise\Gestion_Entreprise\bin\Debug\Gestion_Entreprise.exe.config
+C:\Users\Julien\Desktop\ECAM\3BA\Programmation orientée objet\Projet\Gestion_Entreprise\Gestion_Entreprise\bin\Debug\Gestion_Entreprise.exe
+C:\Users\Julien\Desktop\ECAM\3BA\Programmation orientée objet\Projet\Gestion_Entreprise\Gestion_Entreprise\bin\Debug\Gestion_Entreprise.pdb
+C:\Users\Julien\Desktop\ECAM\3BA\Programmation orientée objet\Projet\Gestion_Entreprise\Gestion_Entreprise\bin\Debug\nunit.framework.dll
+C:\Users\Julien\Desktop\ECAM\3BA\Programmation orientée objet\Projet\Gestion_Entreprise\Gestion_Entreprise\bin\Debug\nunit.framework.xml
+C:\Users\Julien\Desktop\ECAM\3BA\Programmation orientée objet\Projet\Gestion_Entreprise\Gestion_Entreprise\obj\Debug\Gestion_Entreprise.exe
+C:\Users\Julien\Desktop\ECAM\3BA\Programmation orientée objet\Projet\Gestion_Entreprise\Gestion_Entreprise\obj\Debug\Gestion_Entreprise.pdb
