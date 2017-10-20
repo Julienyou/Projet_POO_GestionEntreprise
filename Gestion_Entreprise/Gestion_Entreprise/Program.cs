@@ -84,6 +84,7 @@ namespace Gestion_Entreprise
             return this.client;
         }
 
+        /*Give days between 2 dates*/
         public int GetPeriode()
         {
             Dictionary<string, int> months = new Dictionary<string, int>()
@@ -142,6 +143,7 @@ namespace Gestion_Entreprise
             this.prime = salary;
         }
 
+        /*Calculated salary/year with malus and bonus*/
         public override int ComputeSalary(int year)
         {
             foreach (Consultation consult in this.listConsultation)
@@ -149,10 +151,12 @@ namespace Gestion_Entreprise
                 Client client = consult.GetClient();
                 int periode = consult.GetPeriode();
 
+                /*Bonus of 250€/consultation*/
                 if (client.GetName() != base.company)
                 {
                     this.prime += 250;
                 }
+                /*If the consultant work in company -> malus 10€/day*/
                 else
                 {
                     this.prime -= 10 * periode;
