@@ -69,10 +69,10 @@ namespace Gestion_Entreprise
     class Consultation
     { 
         private Client client;
-        private int startPeriode;
-        private int endPeriode;
+        private string startPeriode;
+        private string endPeriode;
 
-        public Consultation(Client client, int startPeriode, int endPeriode)
+        public Consultation(Client client, string startPeriode, string endPeriode)
         { 
             this.client = client;
             this.startPeriode = startPeriode;
@@ -82,6 +82,16 @@ namespace Gestion_Entreprise
         public Client GetClient()
         {
             return this.client;
+        }
+
+        public string GetPeriode()
+        {
+            String[] start = this.startPeriode.Split('/');
+            String[] end = this.endPeriode.Split('/');
+
+            int result = Convert.ToInt32(end[1]) - Convert.ToInt32(start[1]);
+
+            return Convert.ToString(result);
         }
     }
 
@@ -152,18 +162,28 @@ namespace TestUnit
     {
         private Gestion_Entreprise.Client client;
         private Gestion_Entreprise.Consultation consult;
+        private string startPeriode;
+        private string endPeriode;
 
         [SetUp()]
         public void Init()
         {
             client = new Gestion_Entreprise.Client("Ludovic");
-            consult = new Gestion_Entreprise.Consultation(client, 12, 13);
+            startPeriode = "20/10/17";
+            endPeriode = "20/11/17";
+            consult = new Gestion_Entreprise.Consultation(client, startPeriode, endPeriode);
         }
 
         [Test()]
         public void TestGetClient()
         {
             Assert.That(consult.GetClient(), Is.EqualTo(client));
+        }
+
+        [Test()]
+        public void TestGetPeriode()
+        {
+            Assert.That(consult.GetPeriode, Is.EqualTo("1"));
         }
     }
 }
