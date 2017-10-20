@@ -86,6 +86,22 @@ namespace Gestion_Entreprise
 
         public int GetPeriode()
         {
+            Dictionary<string, int> months = new Dictionary<string, int>()
+            {
+                { "01", 31},
+                { "02", 28},
+                { "03", 31},
+                { "04", 30},
+                { "05", 31},
+                { "06", 30},
+                { "07", 31},
+                { "08", 31},
+                { "09", 30},
+                { "10", 31},
+                { "11", 30},
+                { "12", 31}
+            };
+
             String[] start = this.startPeriode.Split('/');
             String[] end = this.endPeriode.Split('/');
 
@@ -96,11 +112,17 @@ namespace Gestion_Entreprise
             int startYear = Convert.ToInt32(start[2]);
             int endYear = Convert.ToInt32(end[2]);
 
-            /*If month and year are sames -> diff day*/
-            if (endMonth-startMonth == 0 && endYear-startYear == 0)
+            /*If months and years are sames -> diff days*/
+            if (endDay - startDay != 0 && endMonth - startMonth == 0 && endYear - startYear == 0)
             {
-                return endDay - startDay;                
+                return endDay - startDay;
             }
+            /*If years are same -> dif days & months */
+            else if (endDay - startDay != 0 && endMonth - startMonth != 0 && endYear - startYear == 0)
+            {
+                return (months[start[1]] - startDay) + endDay;
+            }
+            
 
             return 0;
         }
@@ -125,6 +147,7 @@ namespace Gestion_Entreprise
             foreach (Consultation consult in this.listConsultation)
             {
                 Client client = consult.GetClient();
+                int periode = consult.GetPeriode();
 
                 if (client.GetName() != base.company)
                 {
@@ -132,7 +155,7 @@ namespace Gestion_Entreprise
                 }
                 else
                 {
-                    this.prime -= 50;
+                    this.prime -= 10 * periode;
                 }
             }
 
@@ -236,8 +259,8 @@ namespace TestUnit
         public void Init()
         {
             client = new Gestion_Entreprise.Client("Ludovic");
-            startPeriode = "20/10/17";
-            endPeriode = "25/10/17";
+            startPeriode = "21/10/17";
+            endPeriode = "05/11/17";
             consult = new Gestion_Entreprise.Consultation(client, startPeriode, endPeriode);
         }
 
@@ -250,7 +273,7 @@ namespace TestUnit
         [Test()]
         public void TestGetPeriode()
         {
-            Assert.That(consult.GetPeriode, Is.EqualTo(5));
+            Assert.That(consult.GetPeriode, Is.EqualTo(15));
         }
     }
 
