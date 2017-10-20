@@ -25,7 +25,7 @@ namespace Gestion_Entreprise
             this.company = company;
         }
 
-        public virtual int ComputeSalary()
+        public virtual int ComputeSalary(int year)
         {
             return 0;
         }
@@ -100,11 +100,30 @@ namespace Gestion_Entreprise
         //private Manager manager;
         private Consultation consultation;
         private List<Consultation> listConsultation = new List<Consultation>();
+        private int prime;
 
         public Consultant(string firstname,string lastname,int salary,int id,string company,Consultation consultation) : base(firstname,lastname,salary,id,company)
         {
             this.consultation = consultation;
             this.AddConsultation(consultation);
+            this.prime = salary;
+        }
+
+        public override int ComputeSalary(int year)
+        {
+            foreach (Consultation consult in this.listConsultation)
+            {
+                Client client = consult.GetClient();
+
+                if (client.GetName() != base.company)
+                {
+                    this.prime += 250;
+                }
+            }
+
+            base.AddSalary(year,prime);
+
+            return prime;
         }
 
         public Client GetClient()
@@ -122,7 +141,6 @@ namespace Gestion_Entreprise
             return this.listConsultation;
         }
 
-        /*function not tested*/
         public void AddConsultation(Consultation consult)
         {
             listConsultation.Add(consult);
@@ -225,7 +243,9 @@ namespace TestUnit
     public class TestConsultant
     {
         private Gestion_Entreprise.Client julien;
+        private Gestion_Entreprise.Client name_compan;
         private Gestion_Entreprise.Consultation firstConsult;
+        private Gestion_Entreprise.Consultation secondConsult;
         private string startPeriode;
         private string endPeriode;
         private Gestion_Entreprise.Consultant ludovic;
@@ -237,7 +257,9 @@ namespace TestUnit
             endPeriode = "20/11/17";
 
             julien = new Gestion_Entreprise.Client("Julien");
+            name_compan = new Gestion_Entreprise.Client("Name_compan");
             firstConsult = new Gestion_Entreprise.Consultation(julien, startPeriode, endPeriode);
+            secondConsult = new Gestion_Entreprise.Consultation(name_compan,startPeriode,endPeriode);
             ludovic = new Gestion_Entreprise.Consultant("Ludovic","Merel",35000,14066,
                                                         "Name_compan",firstConsult);
         }
@@ -258,6 +280,12 @@ namespace TestUnit
         public void TestGetConsultation()
         {
             Assert.That(ludovic.GetConsultations(), Is.EqualTo(new List<Gestion_Entreprise.Consultation> {firstConsult}));
+        }
+
+        [Test()]
+        public void TestComputeSalary()
+        {
+            Assert.That(ludovic.ComputeSalary(2017), Is.EqualTo(35250));
         }
     }
 }
