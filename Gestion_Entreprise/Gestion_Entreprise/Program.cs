@@ -84,14 +84,25 @@ namespace Gestion_Entreprise
             return this.client;
         }
 
-        public string GetPeriode()
+        public int GetPeriode()
         {
             String[] start = this.startPeriode.Split('/');
             String[] end = this.endPeriode.Split('/');
 
-            int result = Convert.ToInt32(end[1]) - Convert.ToInt32(start[1]);
+            int startDay = Convert.ToInt32(start[0]);
+            int endDay = Convert.ToInt32(end[0]);
+            int startMonth = Convert.ToInt32(start[1]);
+            int endMonth = Convert.ToInt32(end[1]);
+            int startYear = Convert.ToInt32(start[2]);
+            int endYear = Convert.ToInt32(end[2]);
 
-            return Convert.ToString(result);
+            /*If month and year are sames -> diff day*/
+            if (endMonth-startMonth == 0 && endYear-startYear == 0)
+            {
+                return endDay - startDay;                
+            }
+
+            return 0;
         }
     }
 
@@ -118,6 +129,10 @@ namespace Gestion_Entreprise
                 if (client.GetName() != base.company)
                 {
                     this.prime += 250;
+                }
+                else
+                {
+                    this.prime -= 50;
                 }
             }
 
@@ -182,11 +197,11 @@ namespace TestUnit
             Assert.That(Julien.GetLastname(), Is.EqualTo("Beard"));
         }
 
-        [Test()]
+        /*[Test()]
         public void TestGetSalary()
         {
             Assert.That(Julien.GetSalary(2017), Is.EqualTo(3400));
-        }
+        }*/
 
 
     }
@@ -222,7 +237,7 @@ namespace TestUnit
         {
             client = new Gestion_Entreprise.Client("Ludovic");
             startPeriode = "20/10/17";
-            endPeriode = "20/11/17";
+            endPeriode = "25/10/17";
             consult = new Gestion_Entreprise.Consultation(client, startPeriode, endPeriode);
         }
 
@@ -235,7 +250,7 @@ namespace TestUnit
         [Test()]
         public void TestGetPeriode()
         {
-            Assert.That(consult.GetPeriode, Is.EqualTo("1"));
+            Assert.That(consult.GetPeriode, Is.EqualTo(5));
         }
     }
 
@@ -259,9 +274,10 @@ namespace TestUnit
             julien = new Gestion_Entreprise.Client("Julien");
             name_compan = new Gestion_Entreprise.Client("Name_compan");
             firstConsult = new Gestion_Entreprise.Consultation(julien, startPeriode, endPeriode);
-            secondConsult = new Gestion_Entreprise.Consultation(name_compan,startPeriode,endPeriode);
+            secondConsult = new Gestion_Entreprise.Consultation(name_compan, "20/10/17", "25/10/17");
             ludovic = new Gestion_Entreprise.Consultant("Ludovic","Merel",35000,14066,
                                                         "Name_compan",firstConsult);
+            ludovic.AddConsultation(secondConsult);
         }
 
         [Test()]
@@ -279,13 +295,14 @@ namespace TestUnit
         [Test()]
         public void TestGetConsultation()
         {
-            Assert.That(ludovic.GetConsultations(), Is.EqualTo(new List<Gestion_Entreprise.Consultation> {firstConsult}));
+            Assert.That(ludovic.GetConsultations(), Is.EqualTo(new List<Gestion_Entreprise.Consultation> {firstConsult, secondConsult}));
         }
 
         [Test()]
         public void TestComputeSalary()
         {
-            Assert.That(ludovic.ComputeSalary(2017), Is.EqualTo(35250));
+            Assert.That(ludovic.ComputeSalary(2017), Is.EqualTo(35200));
         }
+
     }
 }
