@@ -95,6 +95,23 @@ namespace Gestion_Entreprise
         }
     }
 
+    class Consultant
+    {
+        //private Manager manager;
+        private Consultation consultation;
+        private List<Consultation> listConsultation;
+
+        public Consultant(Consultation consultation)
+        {
+            this.consultation = consultation;
+        }
+
+        public Client GetClient()
+        {
+            return this.consultation.GetClient();
+        }
+    }
+
     class Program
     {
         static void Main(string[] args)
@@ -184,6 +201,33 @@ namespace TestUnit
         public void TestGetPeriode()
         {
             Assert.That(consult.GetPeriode, Is.EqualTo("1"));
+        }
+    }
+
+    [TestFixture()]
+    public class TestConsultant
+    {
+        private Gestion_Entreprise.Client julien;
+        private Gestion_Entreprise.Consultation firstConsult;
+        private string startPeriode;
+        private string endPeriode;
+        private Gestion_Entreprise.Consultant ludovic;
+            
+        [SetUp()]
+        public void Init()
+        {
+            startPeriode = "20/10/17";
+            endPeriode = "20/11/17";
+
+            julien = new Gestion_Entreprise.Client("Julien");
+            firstConsult = new Gestion_Entreprise.Consultation(julien, startPeriode, endPeriode);
+            ludovic = new Gestion_Entreprise.Consultant(firstConsult);
+        }
+
+        [Test()]
+        public void TestGetClient()
+        {
+            Assert.That(ludovic.GetClient(), Is.EqualTo(julien));
         }
     }
 }
