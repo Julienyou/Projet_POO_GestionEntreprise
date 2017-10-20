@@ -99,11 +99,12 @@ namespace Gestion_Entreprise
     {
         //private Manager manager;
         private Consultation consultation;
-        private List<Consultation> listConsultation;
+        private List<Consultation> listConsultation = new List<Consultation>();
 
         public Consultant(string firstname,string lastname,int salary,int id,string company,Consultation consultation) : base(firstname,lastname,salary,id,company)
         {
             this.consultation = consultation;
+            this.AddConsultation(consultation);
         }
 
         public Client GetClient()
@@ -113,7 +114,18 @@ namespace Gestion_Entreprise
 
         public string GetCompany()
         {
-            return base.company;
+            return company;
+        }
+
+        public List<Consultation> GetConsultations()
+        {
+            return this.listConsultation;
+        }
+
+        /*function not tested*/
+        public void AddConsultation(Consultation consult)
+        {
+            listConsultation.Add(consult);
         }
     }
 
@@ -240,6 +252,12 @@ namespace TestUnit
         public void TestGetCompany()
         {
             Assert.That(ludovic.GetCompany(), Is.EqualTo("Name_compan"));
+        }
+
+        [Test()]
+        public void TestGetConsultation()
+        {
+            Assert.That(ludovic.GetConsultations(), Is.EqualTo(new List<Gestion_Entreprise.Consultation> {firstConsult}));
         }
     }
 }
