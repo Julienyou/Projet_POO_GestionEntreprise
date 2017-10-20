@@ -95,13 +95,13 @@ namespace Gestion_Entreprise
         }
     }
 
-    class Consultant
+    class Consultant:Employee
     {
         //private Manager manager;
         private Consultation consultation;
         private List<Consultation> listConsultation;
 
-        public Consultant(Consultation consultation)
+        public Consultant(string firstname,string lastname,int salary,int id,string company,Consultation consultation) : base(firstname,lastname,salary,id,company)
         {
             this.consultation = consultation;
         }
@@ -109,6 +109,11 @@ namespace Gestion_Entreprise
         public Client GetClient()
         {
             return this.consultation.GetClient();
+        }
+
+        public string GetCompany()
+        {
+            return base.company;
         }
     }
 
@@ -221,13 +226,20 @@ namespace TestUnit
 
             julien = new Gestion_Entreprise.Client("Julien");
             firstConsult = new Gestion_Entreprise.Consultation(julien, startPeriode, endPeriode);
-            ludovic = new Gestion_Entreprise.Consultant(firstConsult);
+            ludovic = new Gestion_Entreprise.Consultant("Ludovic","Merel",35000,14066,
+                                                        "Name_compan",firstConsult);
         }
 
         [Test()]
         public void TestGetClient()
         {
             Assert.That(ludovic.GetClient(), Is.EqualTo(julien));
+        }
+
+        [Test()]
+        public void TestGetCompany()
+        {
+            Assert.That(ludovic.GetCompany(), Is.EqualTo("Name_compan"));
         }
     }
 }

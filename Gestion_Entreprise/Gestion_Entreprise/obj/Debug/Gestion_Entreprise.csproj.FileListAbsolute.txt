@@ -16,3 +16,12 @@ C:\git\Projet_POO_GestionEntreprise\Gestion_Entreprise\Gestion_Entreprise\obj\De
 C:\git\Projet_POO_GestionEntreprise\Gestion_Entreprise\Gestion_Entreprise\obj\Debug\Gestion_Entreprise.csproj.CoreCompileInputs.cache
 C:\git\Projet_POO_GestionEntreprise\Gestion_Entreprise\Gestion_Entreprise\obj\Debug\Gestion_Entreprise.exe
 C:\git\Projet_POO_GestionEntreprise\Gestion_Entreprise\Gestion_Entreprise\obj\Debug\Gestion_Entreprise.pdb
+C:\Users\le-so\Github\Projet_POO_GestionEntreprise\Gestion_Entreprise\Gestion_Entreprise\bin\Debug\Gestion_Entreprise.exe.config
+C:\Users\le-so\Github\Projet_POO_GestionEntreprise\Gestion_Entreprise\Gestion_Entreprise\bin\Debug\Gestion_Entreprise.exe
+C:\Users\le-so\Github\Projet_POO_GestionEntreprise\Gestion_Entreprise\Gestion_Entreprise\bin\Debug\Gestion_Entreprise.pdb
+C:\Users\le-so\Github\Projet_POO_GestionEntreprise\Gestion_Entreprise\Gestion_Entreprise\bin\Debug\nunit.framework.dll
+C:\Users\le-so\Github\Projet_POO_GestionEntreprise\Gestion_Entreprise\Gestion_Entreprise\bin\Debug\nunit.framework.xml
+C:\Users\le-so\Github\Projet_POO_GestionEntreprise\Gestion_Entreprise\Gestion_Entreprise\obj\Debug\Gestion_Entreprise.csprojResolveAssemblyReference.cache
+C:\Users\le-so\Github\Projet_POO_GestionEntreprise\Gestion_Entreprise\Gestion_Entreprise\obj\Debug\Gestion_Entreprise.csproj.CoreCompileInputs.cache
+C:\Users\le-so\Github\Projet_POO_GestionEntreprise\Gestion_Entreprise\Gestion_Entreprise\obj\Debug\Gestion_Entreprise.exe
+C:\Users\le-so\Github\Projet_POO_GestionEntreprise\Gestion_Entreprise\Gestion_Entreprise\obj\Debug\Gestion_Entreprise.pdb
