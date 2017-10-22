@@ -89,19 +89,21 @@ namespace Gestion_Entreprise
         {
             Dictionary<string, int> months = new Dictionary<string, int>()
             {
-                { "01", 31},
-                { "02", 28},
-                { "03", 31},
-                { "04", 30},
-                { "05", 31},
-                { "06", 30},
-                { "07", 31},
-                { "08", 31},
-                { "09", 30},
+                { "1", 31},
+                { "2", 28},
+                { "3", 31},
+                { "4", 30},
+                { "5", 31},
+                { "6", 30},
+                { "7", 31},
+                { "8", 31},
+                { "9", 30},
                 { "10", 31},
                 { "11", 30},
                 { "12", 31}
             };
+
+            int days = 0;
 
             String[] start = this.startPeriode.Split('/');
             String[] end = this.endPeriode.Split('/');
@@ -114,18 +116,36 @@ namespace Gestion_Entreprise
             int endYear = Convert.ToInt32(end[2]);
 
             /*If months and years are sames -> diff days*/
-            if (endDay - startDay != 0 && endMonth - startMonth == 0 && endYear - startYear == 0)
+            if (endYear - startYear == 0)
             {
-                return endDay - startDay;
-            }
-            /*If years are same -> dif days & months */
-            else if (endDay - startDay != 0 && endMonth - startMonth != 0 && endYear - startYear == 0)
-            {
-                return (months[start[1]] - startDay) + endDay;
+                /*If same years and month*/
+                if (endMonth - startMonth == 0 && endDay - startDay != 0)
+                {
+                    return endDay - startDay;
+                }
+                else if (endMonth - startMonth == 1)
+                {
+                    return (months[start[1]] - startDay) + endDay;
+                }
+                /*If same years but not months*/
+                else if (endMonth - startMonth > 1)
+                {
+                    for (int i = startMonth+1 ; i < endMonth; i++)
+                    {
+                        string month = Convert.ToString(i);
+
+                        days += months[month];
+                    }
+
+                    /*  /!\ bug  */
+                    return (months[start[1]] - startDay) + endDay; 
+                }
+                else { return 0; }
+                
             }
             
-
-            return 0;
+            /*return -1 if error*/
+                    return -1;
         }
     }
 
@@ -277,7 +297,7 @@ namespace TestUnit
         [Test()]
         public void TestGetPeriode()
         {
-            Assert.That(consult.GetPeriode, Is.EqualTo(15));
+            Assert.That(consult.GetPeriode(), Is.EqualTo(15));
         }
     }
 
