@@ -12,16 +12,14 @@ namespace Gestion_Entreprise
         protected string firstname;
         protected string lastname;
         protected int salary;
-        protected int id;
         protected string company;
         protected Dictionary<int, int> salary_dico = new Dictionary<int, int>();
 
-        public Employee(string firstname,string lastname,int salary,int id,string company)
+        public Employee(string firstname,string lastname,int salary,string company)
         {
             this.firstname = firstname;
             this.lastname = lastname;
             this.salary = salary;
-            this.id = id;
             this.company = company;
         }
 
@@ -54,19 +52,22 @@ namespace Gestion_Entreprise
     class Manager : Employee
     {
         private List<Consultant> consultants = new List<Consultant>();
+        private Consultant consultant;
 
-        public Manager(string firstname, string lastname, int salary, int id, string company) : base(firstname, lastname, salary, id, company)
+        public Manager(string firstname, string lastname, int salary, string company,Consultant consultant) : base(firstname, lastname, salary, company)
         {
+            this.consultant = consultant;
+            this.AddConsultant(this.consultant);
         }
 
         public override int ComputeSalary(int year)
         {
-            salary = salary + 500 * consultants.Count;
+            salary += 500 * consultants.Count;
             AddSalary(year, salary);
             return salary;
         }
 
-        public void AddConsultant(Consultant consultant, int id)
+        public void AddConsultant(Consultant consultant)
         {
             consultants.Add(consultant);
         }
@@ -85,7 +86,7 @@ namespace Gestion_Entreprise
 
     class Director : Employee
     {
-        public Director(string firstname, string lastname, int salary, int id, string company) : base(firstname, lastname, salary, id, company)
+        public Director(string firstname, string lastname, int salary, string company) : base(firstname, lastname, salary,company)
         {
         }
 
@@ -133,18 +134,18 @@ namespace Gestion_Entreprise
         {
             Dictionary<string, int> months = new Dictionary<string, int>()
             {
-                { "1", 31},
-                { "2", 28},
-                { "3", 31},
-                { "4", 30},
-                { "5", 31},
-                { "6", 30},
-                { "7", 31},
-                { "8", 31},
-                { "9", 30},
-                { "10", 31},
-                { "11", 30},
-                { "12", 31}
+                {"01", 31},
+                {"02", 28},
+                {"03", 31},
+                {"04", 30},
+                {"05", 31},
+                {"06", 30},
+                {"07", 31},
+                {"08", 31},
+                {"09", 30},
+                {"10", 31},
+                {"11", 30},
+                {"12", 31}
             };
 
             int days = 0;
@@ -182,7 +183,7 @@ namespace Gestion_Entreprise
                     }
 
                     /*  /!\ bug  */
-                    return (months[start[1]] - startDay) + endDay; 
+                    return days += (months[start[1]] - startDay) + endDay; 
                 }
                 else { return 0; }
                 
@@ -200,7 +201,7 @@ namespace Gestion_Entreprise
         private List<Consultation> listConsultation = new List<Consultation>();
         private int prime;
 
-        public Consultant(string firstname,string lastname,int salary,int id,string company,Consultation consultation) : base(firstname,lastname,salary,id,company)
+        public Consultant(string firstname,string lastname,int salary,string company,Consultation consultation) : base(firstname,lastname,salary,company)
         {
             this.consultation = consultation;
             this.AddConsultation(consultation);
@@ -277,7 +278,7 @@ namespace TestUnit
         [SetUp()]
         public void Init()
         {
-            Julien = new Gestion_Entreprise.Employee("Julien", "Beard", 3000, 15172, "Name_company");
+            Julien = new Gestion_Entreprise.Employee("Julien", "Beard", 3000, "Name_company");
             Julien.AddSalary(2017, 3400);
         }
 
@@ -306,14 +307,23 @@ namespace TestUnit
     public class TestManager
     {
         private Gestion_Entreprise.Manager Julien;
+        private Gestion_Entreprise.Consultant Ludovic;
+        private Gestion_Entreprise.Client client;
+        private Gestion_Entreprise.Consultation consult;
+        private string startPeriode;
+        private string endPeriode;
 
         [SetUp()]
         public void Init()
         {
-            Julien = new Gestion_Entreprise.Manager("Julien", "Beard", 3000, 15172, "Name_company");
+            client = new Gestion_Entreprise.Client("Ludovic");
+            startPeriode = "21/10/17";
+            endPeriode = "05/11/17";
+            consult = new Gestion_Entreprise.Consultation(client, startPeriode, endPeriode);
+            Julien = new Gestion_Entreprise.Manager("Julien", "Beard", 3000, "Name_company",Ludovic);
             Julien.AddSalary(2017, 3400);
-            //         Ludovic = new Gestion_Entreprise.Consultant("Ludovic", "Merel", 2500, 14555, "Name_company");
-            //         Julien.AddConsultant(Ludovic, 14555);
+            Ludovic = new Gestion_Entreprise.Consultant("Ludovic", "Merel", 2500, "Name_company",consult);
+            //Julien.AddConsultant(Ludovic);
         }
 
         [Test()]
@@ -338,14 +348,7 @@ namespace TestUnit
            public void TestGetReport()
            {
                Assert.That(Julien.GetReport(), Is.EqualTo(3400));
-           }
-
-           [Test()]
-           public void TestAddConsultant()
-           {
-               Assert.That(Julien.AddConsultant(Ludovic), Is.EqualTo(3400));
            }*/
-
     }
 
     [TestFixture()]
@@ -356,7 +359,7 @@ namespace TestUnit
         [SetUp()]
         public void Init()
         {
-            Bastien = new Gestion_Entreprise.Director("Bastien", "Paul", 3000, 15172, "Name_company");
+            Bastien = new Gestion_Entreprise.Director("Bastien", "Paul", 3000, "Name_company");
             Bastien.AddSalary(2017, 3400);
         }
 
@@ -384,24 +387,6 @@ namespace TestUnit
                Assert.That(Bastien.ComputeSalary(2017), Is.EqualTo(...); ///à calculer
            }
        }*/
-
-        [TestFixture()]
-        public class TestClient
-        {
-            private Gestion_Entreprise.Client client;
-
-            [SetUp()]
-            public void Init()
-            {
-                client = new Gestion_Entreprise.Client("Juju & C0");
-            }
-
-            [Test()]
-            public void TestGetName()
-            {
-                Assert.That(client.GetName(), Is.EqualTo("Juju & C0"));
-            }
-        }
     }
 
     [TestFixture()]
@@ -473,7 +458,7 @@ namespace TestUnit
             name_compan = new Gestion_Entreprise.Client("Name_compan");
             firstConsult = new Gestion_Entreprise.Consultation(julien, startPeriode, endPeriode);
             secondConsult = new Gestion_Entreprise.Consultation(name_compan, "20/10/17", "25/10/17");
-            ludovic = new Gestion_Entreprise.Consultant("Ludovic","Merel",35000,14066,
+            ludovic = new Gestion_Entreprise.Consultant("Ludovic","Merel",35000,
                                                         "Name_compan",firstConsult);
             ludovic.AddConsultation(secondConsult);
         }
