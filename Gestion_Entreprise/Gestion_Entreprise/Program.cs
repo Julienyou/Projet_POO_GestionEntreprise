@@ -133,18 +133,18 @@ namespace Gestion_Entreprise
         {
             Dictionary<string, int> months = new Dictionary<string, int>()
             {
-                { "1", 31},
-                { "2", 28},
-                { "3", 31},
-                { "4", 30},
-                { "5", 31},
-                { "6", 30},
-                { "7", 31},
-                { "8", 31},
-                { "9", 30},
-                { "10", 31},
-                { "11", 30},
-                { "12", 31}
+                {"01", 31},
+                {"02", 28},
+                {"03", 31},
+                {"04", 30},
+                {"05", 31},
+                {"06", 30},
+                {"07", 31},
+                {"08", 31},
+                {"09", 30},
+                {"10", 31},
+                {"11", 30},
+                {"12", 31}
             };
 
             int days = 0;
@@ -181,36 +181,36 @@ namespace Gestion_Entreprise
                         days += months[month];
                     }
 
-                    /*  /!\ bug  */
-                    return (months[start[1]] - startDay) + endDay; 
+                    return days += (months[start[1]] - startDay) + endDay; 
                 }
-                else { return 0; }
+                else { return -1; }
                 
             }
             
             /*return -1 if error*/
-                    return -1;
+            return -1;
         }
     }
 
     class Consultant:Employee
     {
-        //private Manager manager;
+        private Manager manager;
         private Consultation consultation;
         private List<Consultation> listConsultation = new List<Consultation>();
         private int prime;
 
-        public Consultant(string firstname,string lastname,int salary,int id,string company,Consultation consultation) : base(firstname,lastname,salary,id,company)
+        public Consultant(string firstname,string lastname,int salary,int id,string company,Manager manager, Consultation consultation) : base(firstname,lastname,salary,id,company)
         {
             this.consultation = consultation;
+            this.manager = manager;
             this.AddConsultation(consultation);
             this.prime = salary;
         }
 
-        /*public Manager GetManager()
+        public Manager GetManager()
         {
             return this.manager;
-        }*/
+        }
 
         /*Calculated salary/year with malus and bonus*/
         public override int ComputeSalary(int year)
@@ -236,7 +236,7 @@ namespace Gestion_Entreprise
 
             return prime;
         }
-
+        /*Recupére le client actuel*/
         public Client GetClient()
         {
             return this.consultation.GetClient();
@@ -434,8 +434,8 @@ namespace TestUnit
         public void Init()
         {
             client = new Gestion_Entreprise.Client("Ludovic");
-            startPeriode = "21/10/17";
-            endPeriode = "05/11/17";
+            startPeriode = "20/09/17";
+            endPeriode = "25/09/17";
             consult = new Gestion_Entreprise.Consultation(client, startPeriode, endPeriode);
         }
 
@@ -448,7 +448,7 @@ namespace TestUnit
         [Test()]
         public void TestGetPeriode()
         {
-            Assert.That(consult.GetPeriode(), Is.EqualTo(15));
+            Assert.That(consult.GetPeriode(), Is.EqualTo(5));
         }
     }
 
@@ -462,6 +462,7 @@ namespace TestUnit
         private string startPeriode;
         private string endPeriode;
         private Gestion_Entreprise.Consultant ludovic;
+        private Gestion_Entreprise.Manager bob;
             
         [SetUp()]
         public void Init()
@@ -470,12 +471,19 @@ namespace TestUnit
             endPeriode = "20/11/17";
 
             julien = new Gestion_Entreprise.Client("Julien");
+            bob = new Gestion_Entreprise.Manager("Julien", "Beard", 3000, 15172, "Name_company");
             name_compan = new Gestion_Entreprise.Client("Name_compan");
             firstConsult = new Gestion_Entreprise.Consultation(julien, startPeriode, endPeriode);
             secondConsult = new Gestion_Entreprise.Consultation(name_compan, "20/10/17", "25/10/17");
             ludovic = new Gestion_Entreprise.Consultant("Ludovic","Merel",35000,14066,
-                                                        "Name_compan",firstConsult);
+                                                        "Name_compan",bob,firstConsult);
             ludovic.AddConsultation(secondConsult);
+        }
+
+        [Test()]
+        public void TestGetManager()
+        {
+            Assert.That(ludovic.GetManager(), Is.EqualTo(bob));
         }
 
         [Test()]
