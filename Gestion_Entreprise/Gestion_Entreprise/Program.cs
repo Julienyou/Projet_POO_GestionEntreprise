@@ -197,14 +197,14 @@ namespace Gestion_Entreprise
         private Manager manager;
         private Consultation consultation;
         private List<Consultation> listConsultation = new List<Consultation>();
-        private int prime;
+        private int salaryYear;
 
         public Consultant(string firstname,string lastname,int salary,int id,string company,Manager manager, Consultation consultation) : base(firstname,lastname,salary,id,company)
         {
             this.consultation = consultation;
             this.manager = manager;
             this.AddConsultation(consultation);
-            this.prime = salary;
+            this.salaryYear = salary;
         }
 
         public Manager GetManager()
@@ -223,18 +223,20 @@ namespace Gestion_Entreprise
                 /*Bonus of 250€/consultation*/
                 if (client.GetName() != base.company)
                 {
-                    this.prime += 250;
+                    this.salaryYear += 250;
                 }
                 /*If the consultant work in company -> malus 10€/day*/
                 else
                 {
-                    this.prime -= 10 * periode;
+                    this.salaryYear -= 10 * periode;
                 }
             }
 
-            base.AddSalary(year,prime);
+            salaryYear += manager.GetSalary(year) * 1/100; 
 
-            return prime;
+            base.AddSalary(year, salaryYear);
+
+            return salaryYear;
         }
         /*Recupére le client actuel*/
         public Client GetClient()
@@ -261,7 +263,7 @@ namespace Gestion_Entreprise
     class Program
     {
         static void Main(string[] args)
-        {
+        {         
         }
     }
 }
@@ -383,25 +385,7 @@ namespace TestUnit
            {
                Assert.That(Bastien.ComputeSalary(2017), Is.EqualTo(...); ///à calculer
            }
-       }*/
-
-        [TestFixture()]
-        public class TestClient
-        {
-            private Gestion_Entreprise.Client client;
-
-            [SetUp()]
-            public void Init()
-            {
-                client = new Gestion_Entreprise.Client("Juju & C0");
-            }
-
-            [Test()]
-            public void TestGetName()
-            {
-                Assert.That(client.GetName(), Is.EqualTo("Juju & C0"));
-            }
-        }
+       }*/   
     }
 
     [TestFixture()]
