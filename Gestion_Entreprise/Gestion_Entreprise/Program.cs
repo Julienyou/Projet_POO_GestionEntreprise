@@ -163,6 +163,11 @@ namespace Gestion_Entreprise
             this.prime = salary;
         }
 
+        /*public Manager GetManager()
+        {
+            return this.manager;
+        }*/
+
         /*Calculated salary/year with malus and bonus*/
         public override int ComputeSalary(int year)
         {
