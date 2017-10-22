@@ -235,7 +235,7 @@ namespace Gestion_Entreprise
                 }
             }
 
-            salaryYear += manager.GetSalary(year) * 1/100; 
+            salaryYear += manager.ComputeSalary(year) * 1/100; 
 
             base.AddSalary(year, salaryYear);
 
@@ -446,9 +446,7 @@ namespace TestUnit
     public class TestConsultant
     {
         private Gestion_Entreprise.Client julien;
-        private Gestion_Entreprise.Client name_compan;
         private Gestion_Entreprise.Consultation firstConsult;
-        private Gestion_Entreprise.Consultation secondConsult;
         private string startPeriode;
         private string endPeriode;
         private Gestion_Entreprise.Consultant ludovic;
@@ -461,14 +459,11 @@ namespace TestUnit
             endPeriode = "20/11/17";
 
             julien = new Gestion_Entreprise.Client("Julien");
-            bob = new Gestion_Entreprise.Manager("Julien", "Beard", 3000, "Name_company",ludovic);
-            name_compan = new Gestion_Entreprise.Client("Name_compan");
+            bob = new Gestion_Entreprise.Manager("Julien", "Beard", 60000, "Name_company",ludovic);
             firstConsult = new Gestion_Entreprise.Consultation(julien, startPeriode, endPeriode);
-            secondConsult = new Gestion_Entreprise.Consultation(name_compan, "20/10/17", "25/10/17");
 
             ludovic = new Gestion_Entreprise.Consultant("Ludovic","Merel",35000,
                                                         "Name_compan",bob ,firstConsult);
-            ludovic.AddConsultation(secondConsult);
         }
 
         [Test()]
@@ -492,13 +487,13 @@ namespace TestUnit
         [Test()]
         public void TestGetConsultation()
         {
-            Assert.That(ludovic.GetConsultations(), Is.EqualTo(new List<Gestion_Entreprise.Consultation> {firstConsult, secondConsult}));
+            Assert.That(ludovic.GetConsultations(), Is.EqualTo(new List<Gestion_Entreprise.Consultation> {firstConsult}));
         }
 
         [Test()]
         public void TestComputeSalary()
         {
-            Assert.That(ludovic.ComputeSalary(2017), Is.EqualTo(35200));
+            Assert.That(ludovic.ComputeSalary(2017), Is.EqualTo(35855));
         }
 
     }
