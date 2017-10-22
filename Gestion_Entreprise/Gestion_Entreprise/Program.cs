@@ -53,18 +53,20 @@ namespace Gestion_Entreprise
     {
         private List<Consultant> consultants = new List<Consultant>();
         private Consultant consultant;
+        private int salaryYear;
 
         public Manager(string firstname, string lastname, int salary, string company,Consultant consultant) : base(firstname, lastname, salary, company)
         {
             this.consultant = consultant;
             this.AddConsultant(this.consultant);
+            this.salaryYear = salary;
         }
 
         public override int ComputeSalary(int year)
         {
-            salary += 500 * consultants.Count;
-            AddSalary(year, salary);
-            return salary;
+            salaryYear += 500 * consultants.Count;
+            AddSalary(year, salaryYear);
+            return salaryYear;
         }
 
         public void AddConsultant(Consultant consultant)
