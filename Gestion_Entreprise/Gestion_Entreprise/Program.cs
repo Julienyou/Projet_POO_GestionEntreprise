@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -319,48 +320,7 @@ namespace Gestion_Entreprise
     {
         static void Main(string[] args)
         {
-            Client julien;
-            Client jean;
-            Consultation firstConsult;
-            Consultation secondConsult;
-
-            Manager bob;
-            Consultant ludovic;
-            Consultant fred;
-
-            DRH drh;           
-            
-            List<Consultant> listConsult = new List<Consultant>();
-
-            string startPeriode = "20/10/17";
-            string endPeriode = "20/11/17";
-
-            string startPeriode2 = "30/05/17";
-            string endPeriode2 = "20/11/17";
-
-            julien = new Client("Julien");
-            firstConsult = new Consultation(julien, startPeriode, endPeriode);
-
-            jean = new Client("Jean");
-            secondConsult = new Consultation(jean, startPeriode2, endPeriode2);
-
-            bob = new Manager("bob", "Beard", 60000, "Name_company");
-            ludovic = new Consultant("Ludovic", "Merel", 35000,
-                                     "Name_compan", bob, firstConsult);
-            fred = new Consultant("Fred", "Truc", 35000,
-                                  "Name_compan", bob, secondConsult);
-
-
-            listConsult.Add(ludovic);
-            listConsult.Add(fred);
-            bob.AddConsultant(ludovic);
-            bob.AddConsultant(fred);
-
-            drh = new DRH("Franck", "test", 70000, "Name_company", listConsult);
-
-            Console.WriteLine(bob.ComputeSalary(2017));
-            Console.WriteLine(ludovic.ComputeSalary(2017));
-            Console.ReadKey();
+            StreamReader sr = new StreamReader(@"Gestion_Entreprise\entreprise.txt");
         }
     }
 }
