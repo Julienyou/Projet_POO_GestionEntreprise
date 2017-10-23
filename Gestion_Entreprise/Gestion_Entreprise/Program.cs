@@ -68,7 +68,7 @@ namespace Gestion_Entreprise
         {
             foreach(Employee employee in employeeList)
             {
-                report += String.Format("{0} {1} : {2}\n",employee.GetFirstname(),employee.GetLastname(),employee.GetSalary(year));
+                report += String.Format("{0} {1} : {2}\n",employee.GetLastname(),employee.GetFirstname(),employee.GetSalary(year));
             }
             return report;
         }
@@ -78,6 +78,7 @@ namespace Gestion_Entreprise
     {
         private List<Consultant> consultants = new List<Consultant>();
         private int salaryYear;
+        private string report = "";
 
         public Manager(string firstname, string lastname, int salary, string company) : base(firstname, lastname, salary, company)
         {
@@ -101,10 +102,15 @@ namespace Gestion_Entreprise
             consultants.Remove(consultant);
         }
 
-        /*public string GetReport()
+        public string GetReport()
         {
+            foreach(Consultant consultant in consultants)
+            {
+                report += String.Format("{0} {1} est actuellement dans la boite \"{2}\".\n",consultant.GetLastname(), consultant.GetFirstname(), consultant.GetClient().GetName());
+            }
 
-        }*/
+            return report;
+        }
         
     }
 
@@ -311,6 +317,7 @@ namespace Gestion_Entreprise
             Ludovic.ComputeSalary(2017);
             Pascal = new DF("Pascal", "Willems", 120000, "Name_company", employeeList);
             Console.WriteLine(Pascal.GetReport(2017));
+            Console.WriteLine(Julien.GetReport());
             Console.ReadKey();
         }
     }
