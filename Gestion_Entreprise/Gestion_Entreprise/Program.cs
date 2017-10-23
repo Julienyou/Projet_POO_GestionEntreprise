@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -160,6 +161,16 @@ namespace Gestion_Entreprise
             return this.client;
         }
 
+        public string StartPeriode()
+        {
+            return startPeriode;
+        }
+
+        public string EndPeriode()
+        {
+            return endPeriode;
+        }
+
         /*Give days between 2 dates*/
         public int GetPeriode()
         {
@@ -208,9 +219,16 @@ namespace Gestion_Entreprise
                 {
                     for (int i = startMonth+1 ; i < endMonth; i++)
                     {
-                        string month = Convert.ToString(i);
-
-                        days += months[month];
+                        if (i < 10)
+                        {
+                            string month = "0" + Convert.ToString(i);
+                            days += months[month];
+                        }
+                        else
+                        {
+                            string month = Convert.ToString(i);
+                            days += months[month];
+                        }
                     }
 
                     return days += (months[start[1]] - startDay) + endDay; 
@@ -281,7 +299,12 @@ namespace Gestion_Entreprise
             return company;
         }
 
-        public List<Consultation> GetConsultations()
+        public Consultation GetConsultation()
+        {
+            return consultation;
+        }
+
+        public List<Consultation> GetListConsultations()
         {
             return this.listConsultation;
         }
@@ -292,11 +315,47 @@ namespace Gestion_Entreprise
         }
     }
 
+    class DRH:Employee
+    {
+        private List<Consultant> consultants;
+        private int salaryYear;
+
+        public DRH(string firstname, string lastname, int salary, string company, List<Consultant> consultants) : base(firstname, lastname, salary, company)
+        {
+            this.consultants = consultants;
+            this.salaryYear = salary;
+        }
+
+        public override int ComputeSalary(int year)
+        {
+            base.AddSalary(year, salaryYear);
+            return salaryYear;
+        }
+
+        public string GetReport()
+        {
+            string report = "";
+
+            foreach (Consultant consult in consultants)
+            {
+                report += String.Format("{0} {1}:\n", consult.GetLastname(), consult.GetFirstname());
+                report += "     *Client : " + consult.GetClient().GetName() + "\n";
+                report += "     *Periode : " + consult.GetConsultation().StartPeriode() + "-" +
+                                         consult.GetConsultation().EndPeriode() + "\n";
+            }
+
+            return report;
+        }
+    }
+
     class Program
     {
         static void Main(string[] args)
         {
-            List<Employee> employeeList = new List<Employee>();
+-
+            StreamReader sr = new StreamReader(@"Gestion_Entreprise\entreprise.txt");
+
+            /*List<Employee> employeeList = new List<Employee>();
             DF Pascal;
             Manager Julien;
             Consultant Ludovic;
@@ -319,7 +378,7 @@ namespace Gestion_Entreprise
             Pascal = new DF("Pascal", "Willems", 120000, "Name_company", employeeList);
             Console.WriteLine(Pascal.GetReport(2017));
             Console.WriteLine(Julien.GetReport());
-            Console.ReadKey();
+            Console.ReadKey();*/
         }
     }
 }
@@ -422,6 +481,7 @@ namespace TestUnit
             endPeriode = "05/11/17";
             consult = new Gestion_Entreprise.Consultation(client, startPeriode, endPeriode);
             Julien = new Gestion_Entreprise.Manager("Julien", "Beard", 3000, "Name_company");
+
             Julien.AddSalary(2017, 3400);
             Ludovic = new Gestion_Entreprise.Consultant("Ludovic", "Merel", 2500, "Name_company",Julien,consult);
             Julien.AddConsultant(Ludovic);
@@ -585,7 +645,7 @@ namespace TestUnit
         [Test()]
         public void TestGetConsultation()
         {
-            Assert.That(ludovic.GetConsultations(), Is.EqualTo(new List<Gestion_Entreprise.Consultation> {firstConsult}));
+            Assert.That(ludovic.GetListConsultations(), Is.EqualTo(new List<Gestion_Entreprise.Consultation> {firstConsult}));
         }
 
         [Test()]
@@ -594,5 +654,51 @@ namespace TestUnit
             Assert.That(ludovic.ComputeSalary(2017), Is.EqualTo(35855));
         }
 
+    }
+
+    [TestFixture()]
+    public class TestDRH
+    {
+        private Gestion_Entreprise.Client julien;
+        private Gestion_Entreprise.Consultation firstConsult;
+        private Gestion_Entreprise.DRH drh;
+        private Gestion_Entreprise.Consultant ludovic;
+        private Gestion_Entreprise.Manager bob;
+
+        private List<Gestion_Entreprise.Consultant> listConsult= new List<Gestion_Entreprise.Consultant>();
+
+        string startPeriode = "20/10/17";
+        string endPeriode = "20/11/17";        
+
+        [SetUp()]
+        public void Init()
+        {
+            julien = new Gestion_Entreprise.Client("Julien");
+            bob = new Gestion_Entreprise.Manager("bob", "Beard", 60000, "Name_company");
+            firstConsult = new Gestion_Entreprise.Consultation(julien, startPeriode, endPeriode);
+            ludovic = new Gestion_Entreprise.Consultant("Ludovic", "Merel", 35000,
+                                                        "Name_compan", bob, firstConsult);
+
+            listConsult.Add(ludovic);
+
+            drh = new Gestion_Entreprise.DRH("Franck", "test", 70000, "Name_company", listConsult);
+            
+        }
+
+        [Test()]
+        public void TestComputeSalary()
+        {
+            Assert.That(drh.ComputeSalary(2017), Is.EqualTo(70000));
+        }
+
+        /*Test bug*/
+
+        /*[Test()]
+        public void TestGetReport()
+        {
+            string report = "Boîte : Julien" + "\n" + "Periode : 20/10/17 - 20/11/17" + "\n";
+
+            Assert.That(drh.GetReport(), Is.EqualTo(report));            
+        }*/
     }
 }
