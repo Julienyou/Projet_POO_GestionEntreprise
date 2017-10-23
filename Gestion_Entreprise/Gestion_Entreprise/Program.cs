@@ -40,7 +40,7 @@ namespace Gestion_Entreprise
 
         public void AddSalary(int year, int salary)
         {
-            this.salary_dico.Add(year, salary);
+            this.salary_dico[year] = salary;
         }
 
         public int GetSalary(int year)
@@ -61,7 +61,7 @@ namespace Gestion_Entreprise
 
         public override int ComputeSalary(int year)
         {
-            salaryYear += 500 * consultants.Count;
+            salaryYear = salary + 500 * consultants.Count;
             AddSalary(year, salaryYear);
             return salaryYear;
         }
@@ -358,7 +358,8 @@ namespace Gestion_Entreprise
 
             drh = new DRH("Franck", "test", 70000, "Name_company", listConsult);
 
-            Console.WriteLine(drh.GetReport());
+            Console.WriteLine(bob.ComputeSalary(2017));
+            Console.WriteLine(ludovic.ComputeSalary(2017));
             Console.ReadKey();
         }
     }
