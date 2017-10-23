@@ -352,7 +352,10 @@ namespace Gestion_Entreprise
     {
         static void Main(string[] args)
         {
+<<<<<<< HEAD
 
+=======
+>>>>>>> 2ae649e83e4e58ce26b5e195fd1646cb20c3445f
             /*List<Employee> employeeList = new List<Employee>();
             DF Pascal;
             Manager Julien;
@@ -378,8 +381,15 @@ namespace Gestion_Entreprise
             Console.WriteLine(Julien.GetReport());
             Console.ReadKey();*/
 
+<<<<<<< HEAD
             StreamReader sr = new StreamReader(@"C:\Users\Julien\Desktop\ECAM\3BA\Programmation orientée objet\Projet\Projet_POO_GestionEntreprise\Gestion_Entreprise");
             
+=======
+            StreamReader sr = new StreamReader(@"C:\git\Projet_POO_GestionEntreprise\Gestion_Entreprise\entreprise.txt");
+
+
+
+>>>>>>> 2ae649e83e4e58ce26b5e195fd1646cb20c3445f
         }
     }
 }
