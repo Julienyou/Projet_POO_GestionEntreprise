@@ -352,8 +352,6 @@ namespace Gestion_Entreprise
     {
         static void Main(string[] args)
         {
--
-            StreamReader sr = new StreamReader(@"Gestion_Entreprise\entreprise.txt");
 
             /*List<Employee> employeeList = new List<Employee>();
             DF Pascal;
@@ -379,6 +377,9 @@ namespace Gestion_Entreprise
             Console.WriteLine(Pascal.GetReport(2017));
             Console.WriteLine(Julien.GetReport());
             Console.ReadKey();*/
+
+            StreamReader sr = new StreamReader(@"C:\Users\Julien\Desktop\ECAM\3BA\Programmation orientée objet\Projet\Projet_POO_GestionEntreprise\Gestion_Entreprise");
+            
         }
     }
 }
