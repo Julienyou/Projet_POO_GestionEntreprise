@@ -3,18 +3,34 @@ CompanyName:Julien&C0
 [Client]
 name:Julien
 
+[Client]
+name:Ottis2000
+
 [Manager]
 lastname:Bourgignon
 firstname:Maxime
 salary:60000
     [Consultant]
-    lastname:Peeters
+    lastname:Feelters
     firstname:Arnaud
     salary:35000
         [Consultation]
 	client:Julien
 	startPeriode:20/10/17
 	endPeriode:05/11/17
+
+[Manager]
+lastname:Atyla
+firstname:Legrand
+salary:60000
+    [Consultant]
+    firstname:Pinochio
+    lastname:Kyo
+    salary:35000
+        [Consultation]
+        client:Ottis2000
+        startPeriode:21/02/1995
+        endPeriode:22/02/1995
 
 [Director]
 lastname:Combefis

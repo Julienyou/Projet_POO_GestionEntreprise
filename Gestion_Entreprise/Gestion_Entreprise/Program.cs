@@ -367,21 +367,23 @@ namespace Gestion_Entreprise
             DF df;
             DRH drh;
 
-            string companyName;
+            string companyName = "";
             string line = "";
-            
 
-            StreamReader sr = new StreamReader(@"C:\Users\Julien\Desktop\ECAM\3BA\Programmation orientée objet\Projet\Projet_POO_GestionEntreprise\Gestion_Entreprise\entreprise.txt");
-            /*StreamReader sr = new StreamReader(@"C:\git\Projet_POO_GestionEntreprise\Gestion_Entreprise\entreprise.txt");*/
+
+            /*StreamReader sr = new StreamReader(@"C:\Users\Julien\Desktop\ECAM\3BA\Programmation orientée objet\Projet\Projet_POO_GestionEntreprise\Gestion_Entreprise\entreprise.txt");*/
+            StreamReader sr = new StreamReader(@"C:\git\Projet_POO_GestionEntreprise\Gestion_Entreprise\entreprise.txt");
+                    
 
             line = sr.ReadLine();
+
+            if (line.Split(':')[0] == "CompanyName")
+            {
+                companyName = line.Split(':')[1];
+            }
+
             while (line != null)
             {
-                if (line.Split(':')[0] == "CompanyName")
-                {
-                    companyName += line.Split(':')[1];
-                }
-
                 line = sr.ReadLine();
 
                 if (line == "[Client]")
@@ -395,13 +397,8 @@ namespace Gestion_Entreprise
                 {
                     line = sr.ReadLine();
                     while (line != null && line != "    [Consultant]")
-                    {
-                        
-
-                        Console.WriteLine(line);
-                        Console.ReadKey();
-
-                        infoManager.Add(line.Split(':')[0], line.Split(':')[1]);
+                    {   
+                        infoManager.Add(line.Split(':')[0].Trim(), line.Split(':')[1].Trim());                        
                         line = sr.ReadLine();
                     }
 
@@ -411,7 +408,7 @@ namespace Gestion_Entreprise
                     {
                         while (line != null && line != "        [Consultation]")
                         {
-                            infoConsultant.Add(line.Split(':')[0], line.Split(':')[1]);
+                            infoConsultant.Add(line.Split(':')[0].Trim(), line.Split(':')[1].Trim());
                             line = sr.ReadLine();
                         }
 
@@ -419,12 +416,12 @@ namespace Gestion_Entreprise
 
                         while (line != null && line != "" && line != "    [Consultant")
                         {
-                            infoConsultation.Add(line.Split(':')[0], line.Split(':')[1]);
+                            infoConsultation.Add(line.Split(':')[0].Trim(), line.Split(':')[1].Trim());
                             line = sr.ReadLine();
                         }
 
                         Dictionary<string, Consultant> consultantDico = new Dictionary<string, Consultant>();
-
+                        
                         managerDico.Add(infoManager["lastname"], 
                                         new Manager(infoManager["firstname"],
                                                     infoManager["lastname"],
@@ -436,24 +433,24 @@ namespace Gestion_Entreprise
                                                           infoConsultant["lastname"],
                                                           Convert.ToInt32(infoConsultant["salary"]),
                                                           companyName,
-                                                          managerDico["lastname"],
+                                                          managerDico[infoManager["lastname"]],
                                            new Consultation(clientDico[infoConsultation["client"]],
                                                             infoConsultation["startPeriode"],
-                                                            infoConsultation["endperiode"])));
+                                                            infoConsultation["endPeriode"])));
 
+                        managerDico[infoManager["lastname"]].AddConsultant(consultantDico[infoConsultant["lastname"]]);
                     }
                 }
 
-
             }
-            
 
-            foreach(string truc in infoConsultation.Values)
+            Console.WriteLine(managerDico["Bourgignon"].ComputeSalary(2017));            
+
+            /*foreach(string truc in infoConsultation.Values)
             {
                 Console.WriteLine(truc);
-            }
+            }*/
             Console.ReadKey();
-
 
         }
     }
