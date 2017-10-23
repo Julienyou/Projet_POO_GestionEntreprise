@@ -351,9 +351,6 @@ namespace Gestion_Entreprise
     {
         static void Main(string[] args)
         {
--
-            StreamReader sr = new StreamReader(@"Gestion_Entreprise\entreprise.txt");
-
             /*List<Employee> employeeList = new List<Employee>();
             DF Pascal;
             Manager Julien;
@@ -378,6 +375,11 @@ namespace Gestion_Entreprise
             Console.WriteLine(Pascal.GetReport(2017));
             Console.WriteLine(Julien.GetReport());
             Console.ReadKey();*/
+
+            StreamReader sr = new StreamReader(@"C:\git\Projet_POO_GestionEntreprise\Gestion_Entreprise\entreprise.txt");
+
+
+
         }
     }
 }
