@@ -357,17 +357,19 @@ namespace Gestion_Entreprise
 
             Dictionary<string, Client> clientDico = new Dictionary<string, Client>();
             Dictionary<string, Manager> managerDico = new Dictionary<string, Manager>();
-            Dictionary<string,Dictionary<string,string>> dico = new Dictionary<string,Dictionary<string,string>>();
+            Dictionary<string, Dictionary<string,string>> dico = new Dictionary<string,Dictionary<string,string>>();
             
             Dictionary<string, string> infoManager = new Dictionary<string, string>();
-            
+            Dictionary<string, string> infoConsultant = new Dictionary<string, string>();
+            Dictionary<string, string> infoConsultation = new Dictionary<string, string>();
+
             Director director;
             DF df;
             DRH drh;
 
             string companyName;
             string line = "";
-
+            
 
             StreamReader sr = new StreamReader(@"C:\Users\Julien\Desktop\ECAM\3BA\Programmation orientée objet\Projet\Projet_POO_GestionEntreprise\Gestion_Entreprise\entreprise.txt");
             /*StreamReader sr = new StreamReader(@"C:\git\Projet_POO_GestionEntreprise\Gestion_Entreprise\entreprise.txt");*/
@@ -377,7 +379,7 @@ namespace Gestion_Entreprise
             {
                 if (line.Split(':')[0] == "CompanyName")
                 {
-                    companyName = line.Split(':')[1];
+                    companyName += line.Split(':')[1];
                 }
 
                 line = sr.ReadLine();
@@ -394,7 +396,7 @@ namespace Gestion_Entreprise
                     line = sr.ReadLine();
                     while (line != null && line != "    [Consultant]")
                     {
-                        Dictionary<string, Consultant> consultantDico = new Dictionary<string, Consultant>();
+                        
 
                         Console.WriteLine(line);
                         Console.ReadKey();
@@ -403,11 +405,50 @@ namespace Gestion_Entreprise
                         line = sr.ReadLine();
                     }
 
+                    line = sr.ReadLine();
+
+                    while (line != null && line != "")
+                    {
+                        while (line != null && line != "        [Consultation]")
+                        {
+                            infoConsultant.Add(line.Split(':')[0], line.Split(':')[1]);
+                            line = sr.ReadLine();
+                        }
+
+                        line = sr.ReadLine();
+
+                        while (line != null && line != "" && line != "    [Consultant")
+                        {
+                            infoConsultation.Add(line.Split(':')[0], line.Split(':')[1]);
+                            line = sr.ReadLine();
+                        }
+
+                        Dictionary<string, Consultant> consultantDico = new Dictionary<string, Consultant>();
+
+                        managerDico.Add(infoManager["lastname"], 
+                                        new Manager(infoManager["firstname"],
+                                                    infoManager["lastname"],
+                                                    Convert.ToInt32(infoManager["salary"]),
+                                                    companyName));
+
+                        consultantDico.Add(infoConsultant["lastname"],
+                                           new Consultant(infoConsultant["firstname"],
+                                                          infoConsultant["lastname"],
+                                                          Convert.ToInt32(infoConsultant["salary"]),
+                                                          companyName,
+                                                          managerDico["lastname"],
+                                           new Consultation(clientDico[infoConsultation["client"]],
+                                                            infoConsultation["startPeriode"],
+                                                            infoConsultation["endperiode"])));
+
+                    }
                 }
 
 
             }
-            foreach(string truc in infoManager.Values)
+            
+
+            foreach(string truc in infoConsultation.Values)
             {
                 Console.WriteLine(truc);
             }
