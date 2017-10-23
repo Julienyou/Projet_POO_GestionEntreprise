@@ -1,20 +1,20 @@
-CompanyName = Julien&C0
+CompanyName:Julien&C0
 
-[Clients]
+[Client]
 name:Julien
 
 [Manager]
 lastname:Bourgignon
 firstname:Maxime
 salary:60000
-	[Consultant]
-	lastname:Peeters
-	firstname:Arnaud
-	salary:35000
-		[Consultation]
-		client:Julien
-		startPeriode:20/10/17
-		endPeriode:05/11/17
+    [Consultant]
+    lastname:Peeters
+    firstname:Arnaud
+    salary:35000
+        [Consultation]
+	client:Julien
+	startPeriode:20/10/17
+	endPeriode:05/11/17
 
 [Director]
 lastname:Combefis

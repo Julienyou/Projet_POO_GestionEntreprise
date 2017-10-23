@@ -352,44 +352,68 @@ namespace Gestion_Entreprise
     {
         static void Main(string[] args)
         {
-<<<<<<< HEAD
+            List<Consultant> consultantsList = new List<Consultant>();
+            List<Employee> employeesList = new List<Employee>();
 
-=======
->>>>>>> 2ae649e83e4e58ce26b5e195fd1646cb20c3445f
-            /*List<Employee> employeeList = new List<Employee>();
-            DF Pascal;
-            Manager Julien;
-            Consultant Ludovic;
-            Client client;
-            Consultation consult;
-            string startPeriode;
-            string endPeriode;
-
-            client = new Client("Ludovic");
-            startPeriode = "21/10/17";
-            endPeriode = "05/11/17";
-            consult = new Consultation(client, startPeriode, endPeriode);
-            Julien = new Manager("Julien", "Beard", 3000, "Name_company");
-            Ludovic = new Consultant("Ludovic", "Merel", 2500, "Name_company", Julien, consult);
-            Julien.AddConsultant(Ludovic);
-            employeeList.Add(Julien);
-            Julien.ComputeSalary(2017);
-            employeeList.Add(Ludovic);
-            Ludovic.ComputeSalary(2017);
-            Pascal = new DF("Pascal", "Willems", 120000, "Name_company", employeeList);
-            Console.WriteLine(Pascal.GetReport(2017));
-            Console.WriteLine(Julien.GetReport());
-            Console.ReadKey();*/
-
-<<<<<<< HEAD
-            StreamReader sr = new StreamReader(@"C:\Users\Julien\Desktop\ECAM\3BA\Programmation orientée objet\Projet\Projet_POO_GestionEntreprise\Gestion_Entreprise");
+            Dictionary<string, Client> clientDico = new Dictionary<string, Client>();
+            Dictionary<string, Manager> managerDico = new Dictionary<string, Manager>();
+            Dictionary<string,Dictionary<string,string>> dico = new Dictionary<string,Dictionary<string,string>>();
             
-=======
-            StreamReader sr = new StreamReader(@"C:\git\Projet_POO_GestionEntreprise\Gestion_Entreprise\entreprise.txt");
+            Dictionary<string, string> infoManager = new Dictionary<string, string>();
+            
+            Director director;
+            DF df;
+            DRH drh;
+
+            string companyName;
+            string line = "";
 
 
+            StreamReader sr = new StreamReader(@"C:\Users\Julien\Desktop\ECAM\3BA\Programmation orientée objet\Projet\Projet_POO_GestionEntreprise\Gestion_Entreprise\entreprise.txt");
+            /*StreamReader sr = new StreamReader(@"C:\git\Projet_POO_GestionEntreprise\Gestion_Entreprise\entreprise.txt");*/
 
->>>>>>> 2ae649e83e4e58ce26b5e195fd1646cb20c3445f
+            line = sr.ReadLine();
+            while (line != null)
+            {
+                if (line.Split(':')[0] == "CompanyName")
+                {
+                    companyName = line.Split(':')[1];
+                }
+
+                line = sr.ReadLine();
+
+                if (line == "[Client]")
+                {
+                    line = sr.ReadLine();
+                    string name = line.Split(':')[1];
+
+                    clientDico.Add(name, new Client(name));
+                }
+                else if(line == "[Manager]")
+                {
+                    line = sr.ReadLine();
+                    while (line != null && line != "    [Consultant]")
+                    {
+                        Dictionary<string, Consultant> consultantDico = new Dictionary<string, Consultant>();
+
+                        Console.WriteLine(line);
+                        Console.ReadKey();
+
+                        infoManager.Add(line.Split(':')[0], line.Split(':')[1]);
+                        line = sr.ReadLine();
+                    }
+
+                }
+
+
+            }
+            foreach(string truc in infoManager.Values)
+            {
+                Console.WriteLine(truc);
+            }
+            Console.ReadKey();
+
+
         }
     }
 }
