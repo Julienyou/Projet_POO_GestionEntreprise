@@ -50,10 +50,36 @@ namespace Gestion_Entreprise
         }
     }
 
+    class DF : Employee
+    {
+        private List<Employee> employeeList;
+        private string report = "";
+
+        public DF(string firstname, string lastname, int salary, string company, List<Employee> employeeList) : base(firstname, lastname, salary, company)
+        {
+            this.employeeList = employeeList;
+        }
+
+        public int ComputeSalary()
+        {
+            return salary;
+        }
+
+       public string GetReport(int year)
+        {
+            foreach(Employee employee in employeeList)
+            {
+                report += String.Format("{0} {1} : {2}\n",employee.GetLastname(),employee.GetFirstname(),employee.GetSalary(year));
+            }
+            return report;
+        }
+    }
+
     class Manager : Employee
     {
         private List<Consultant> consultants = new List<Consultant>();
         private int salaryYear;
+        private string report = "";
 
         public Manager(string firstname, string lastname, int salary, string company) : base(firstname, lastname, salary, company)
         {
@@ -77,10 +103,15 @@ namespace Gestion_Entreprise
             consultants.Remove(consultant);
         }
 
-        /*public string GetReport()
+        public string GetReport()
         {
+            foreach(Consultant consultant in consultants)
+            {
+                report += String.Format("{0} {1} est actuellement dans la boite \"{2}\".\n",consultant.GetLastname(), consultant.GetFirstname(), consultant.GetClient().GetName());
+            }
 
-        }*/
+            return report;
+        }
         
     }
 
@@ -320,7 +351,33 @@ namespace Gestion_Entreprise
     {
         static void Main(string[] args)
         {
+-
             StreamReader sr = new StreamReader(@"Gestion_Entreprise\entreprise.txt");
+
+            /*List<Employee> employeeList = new List<Employee>();
+            DF Pascal;
+            Manager Julien;
+            Consultant Ludovic;
+            Client client;
+            Consultation consult;
+            string startPeriode;
+            string endPeriode;
+
+            client = new Client("Ludovic");
+            startPeriode = "21/10/17";
+            endPeriode = "05/11/17";
+            consult = new Consultation(client, startPeriode, endPeriode);
+            Julien = new Manager("Julien", "Beard", 3000, "Name_company");
+            Ludovic = new Consultant("Ludovic", "Merel", 2500, "Name_company", Julien, consult);
+            Julien.AddConsultant(Ludovic);
+            employeeList.Add(Julien);
+            Julien.ComputeSalary(2017);
+            employeeList.Add(Ludovic);
+            Ludovic.ComputeSalary(2017);
+            Pascal = new DF("Pascal", "Willems", 120000, "Name_company", employeeList);
+            Console.WriteLine(Pascal.GetReport(2017));
+            Console.WriteLine(Julien.GetReport());
+            Console.ReadKey();*/
         }
     }
 }
@@ -362,6 +419,50 @@ namespace TestUnit
     }
 
     [TestFixture()]
+    public class TestDF
+    {
+        List<Gestion_Entreprise.Employee> employeeList = new List<Gestion_Entreprise.Employee>();
+        private Gestion_Entreprise.DF Pascal;
+        private Gestion_Entreprise.Manager Julien;
+        private Gestion_Entreprise.Consultant Ludovic;
+        private Gestion_Entreprise.Client client;
+        private Gestion_Entreprise.Consultation consult;
+        private string startPeriode;
+        private string endPeriode;
+
+        [SetUp()]
+        public void Init()
+        {
+            client = new Gestion_Entreprise.Client("Ludovic");
+            startPeriode = "21/10/17";
+            endPeriode = "05/11/17";
+            consult = new Gestion_Entreprise.Consultation(client, startPeriode, endPeriode);
+            Julien = new Gestion_Entreprise.Manager("Julien", "Beard", 3000, "Name_company");
+            Ludovic = new Gestion_Entreprise.Consultant("Ludovic", "Merel", 2500, "Name_company", Julien, consult);
+            Julien.AddConsultant(Ludovic);
+            employeeList.Add(Julien);
+            Julien.AddSalary(2017, 3500);
+            employeeList.Add(Ludovic);
+            Ludovic.AddSalary(2017, 2500);
+            Pascal = new Gestion_Entreprise.DF("Pascal", "Willems", 120000, "Name_company", employeeList);
+        }
+
+        [Test()]
+        public void TestComputeSalary()
+        {
+            Assert.That(Pascal.ComputeSalary(), Is.EqualTo(120000));
+        }
+
+        /*Test bug*/
+        /*[Test()]
+        public void TestGetReport()
+        {
+            //Assert.That(employeeList, Is.SubsetOf(new List<Gestion_Entreprise.Employee>{ Julien, Ludovic, Julien, Ludovic }));
+            Assert.That(Pascal.GetReport(2017), Is.EqualTo("Julien Beard : 3500\nLudovic Merel : 2500"));
+        }*/
+    }
+
+    [TestFixture()]
     public class TestManager
     {
         private Gestion_Entreprise.Manager Julien;
@@ -379,7 +480,7 @@ namespace TestUnit
             endPeriode = "05/11/17";
             consult = new Gestion_Entreprise.Consultation(client, startPeriode, endPeriode);
             Julien = new Gestion_Entreprise.Manager("Julien", "Beard", 3000, "Name_company");
-           
+
             Julien.AddSalary(2017, 3400);
             Ludovic = new Gestion_Entreprise.Consultant("Ludovic", "Merel", 2500, "Name_company",Julien,consult);
             Julien.AddConsultant(Ludovic);
@@ -519,7 +620,6 @@ namespace TestUnit
 
             ludovic = new Gestion_Entreprise.Consultant("Ludovic","Merel",35000,
                                                         "Name_compan",bob ,firstConsult);
-
             bob.AddConsultant(ludovic);
         }
 
