@@ -51,9 +51,14 @@ namespace Gestion_Entreprise
         }
     }
 
-    class DF : Employee
+    class DF : Director
     {
         private List<Employee> employeeList;
+        private List<string> managerList = new List<string>();
+        private List<string> consultantList = new List<string>();
+        private List<string> dfList = new List<string>();
+        private List<string> drhList = new List<string>();
+
         private string report = "";
 
         public DF(string firstname, string lastname, int salary, string company, List<Employee> employeeList) : base(firstname, lastname, salary, company)
@@ -66,14 +71,66 @@ namespace Gestion_Entreprise
             return salary;
         }
 
-       public string GetReport(int year)
+       public void GetReport(int year)
         {
             foreach(Employee employee in employeeList)
-            {
-                employee.ComputeSalary(2017);
-                report += String.Format("{0} {1} : {2}\n",employee.GetLastname(),employee.GetFirstname(),employee.GetSalary(year));
+            {                
+                if (employee.GetType() == typeof(Gestion_Entreprise.Manager))
+                {                   
+                    employee.ComputeSalary(2017);
+                    report += String.Format("{0} {1} : {2}\n", employee.GetLastname(), employee.GetFirstname(), employee.GetSalary(2017));
+                    managerList.Add(report);
+                }
+
+                if (employee is Consultant)
+                {
+                    employee.ComputeSalary(2017);
+                    report += String.Format("{0} {1} : {2}\n", employee.GetLastname(), employee.GetFirstname(), employee.GetSalary(2017));
+                    consultantList.Add(report);
+                }
+
+                if (employee is DF)
+                {
+                    employee.ComputeSalary(2017);
+                    report += String.Format("{0} {1} : {2}\n", employee.GetLastname(), employee.GetFirstname(), employee.GetSalary(2017));
+                    dfList.Add(report);
+                }
+
+                if (employee is DRH)
+                {
+                    employee.ComputeSalary(2017);
+                    report += String.Format("{0} {1} : {2}\n", employee.GetLastname(), employee.GetFirstname(), employee.GetSalary(2017));
+                    drhList.Add(report);
+                }
+
             }
-            return report;
+
+            try
+            {
+
+                //Pass the filepath and filename to the StreamWriter Constructor
+                StreamWriter sw = new StreamWriter(@"C:\Users\Julien\Desktop\ECAM\3BA\Programmation orientée objet\Projet\Projet_POO_GestionEntreprise\Gestion_Entreprise\DF_Report.txt");
+
+                //Write a line of text
+                sw.WriteLine("DF :\r {0}\n",report);
+
+                sw.WriteLine("DRH :\r {0}\n", report);
+
+                sw.WriteLine("Manager :\r {0}\n", report);
+
+                sw.WriteLine("Consultant :\r {0}\n", report);
+
+                //Close the file
+                sw.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Exception: " + e.Message);
+            }
+            finally
+            {
+                Console.WriteLine("Le rapport du Directeur financier a été généré");
+            }
         }
     }
 
@@ -105,14 +162,33 @@ namespace Gestion_Entreprise
             consultants.Remove(consultant);
         }
 
-        public string GetReport()
+        public void GetReport()
         {
             foreach(Consultant consultant in consultants)
             {
                 report += String.Format("{0} {1} est actuellement dans la boite \"{2}\".\n",consultant.GetLastname(), consultant.GetFirstname(), consultant.GetClient().GetName());
             }
 
-            return report;
+            try
+            {
+
+                //Pass the filepath and filename to the StreamWriter Constructor
+                StreamWriter sw = new StreamWriter(@"C:\Users\Julien\Desktop\ECAM\3BA\Programmation orientée objet\Projet\Projet_POO_GestionEntreprise\Gestion_Entreprise\Manager_Report.txt");
+
+                //Write a line of text
+                sw.WriteLine(report);
+
+                //Close the file
+                sw.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Exception: " + e.Message);
+            }
+            finally
+            {
+                Console.WriteLine("Le rapport du Manager a été généré");
+            }
         }
         
     }
@@ -333,7 +409,7 @@ namespace Gestion_Entreprise
             return salaryYear;
         }
 
-        public string GetReport()
+        public void GetReport()
         {
             string report = "";
 
@@ -345,7 +421,26 @@ namespace Gestion_Entreprise
                                          consult.GetConsultation().EndPeriode() + "\n";
             }
 
-            return report;
+            try
+            {
+
+                //Pass the filepath and filename to the StreamWriter Constructor
+                StreamWriter sw = new StreamWriter(@"C:\Users\Julien\Desktop\ECAM\3BA\Programmation orientée objet\Projet\Projet_POO_GestionEntreprise\Gestion_Entreprise\DRH_Report.txt");
+
+                //Write a line of text
+                sw.WriteLine(report);
+
+                //Close the file
+                sw.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Exception: " + e.Message);
+            }
+            finally
+            {
+                Console.WriteLine("Le rapport du Directeur des ressources humaines a été généré");
+            }
         }
     }
 
@@ -376,12 +471,12 @@ namespace Gestion_Entreprise
 
             try
             {
-                /*sr = new StreamReader(@"C:\Users\Julien\Desktop\ECAM\3BA\Programmation orientée objet\Projet\Projet_POO_GestionEntreprise\Gestion_Entreprise\entreprise.txt");*/
-                sr = new StreamReader(@"C:\git\Projet_POO_GestionEntreprise\Gestion_Entreprise\entreprise.txt");
+                sr = new StreamReader(@"C:\Users\Julien\Desktop\ECAM\3BA\Programmation orientée objet\Projet\Projet_POO_GestionEntreprise\Gestion_Entreprise\entreprise.txt");
+                /*sr = new StreamReader(@"C:\git\Projet_POO_GestionEntreprise\Gestion_Entreprise\entreprise.txt");*/
             }
             catch
             {
-                Console.WriteLine("Erreur lors du traitement du fichier text, verifier l'incrementation");
+                Console.WriteLine("Erreur lors du traitement du fichier texte, verifier l'incrementation");
             }
 
             line = sr.ReadLine();
@@ -547,7 +642,10 @@ namespace Gestion_Entreprise
 
             }           
 
-             Console.WriteLine(df.GetReport(2017));            
+            df.GetReport(2017);
+            managerDico["Bourgignon"].GetReport();
+            //drh.GetReport();
+            
 
             /*foreach(string truc in infoConsultation.Values)
             {
