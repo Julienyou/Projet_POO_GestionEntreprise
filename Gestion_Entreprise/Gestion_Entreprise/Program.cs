@@ -430,6 +430,8 @@ namespace Gestion_Entreprise
                                         infoManager["lastname"],
                                         Convert.ToInt32(infoManager["salary"]),
                                         companyName));
+
+                        employeesList.Add(managerDico[infoManager["lastname"]]);
                     }
                     catch
                     {
@@ -484,8 +486,7 @@ namespace Gestion_Entreprise
                         consultantsList.Add(consultantDico[infoConsultant["lastname"]]);
 
                         employeesList.Add(consultantDico[infoConsultant["lastname"]]);
-                        employeesList.Add(managerDico[infoManager["lastname"]]);
-
+                        
                         infoConsultant.Clear();
                         infoConsultation.Clear();
 
@@ -517,6 +518,8 @@ namespace Gestion_Entreprise
                                                 dicoTampon["lastname"],
                                                 Convert.ToInt32(dicoTampon["salary"]),
                                                 companyName);
+
+                        employeesList.Add(director);
 
                         dicoTampon.Clear();
                     }
@@ -550,6 +553,8 @@ namespace Gestion_Entreprise
                                                 companyName,
                                                 employeesList);
 
+                        employeesList.Add(df);
+
                         dicoTampon.Clear();
                     }
                     catch
@@ -580,6 +585,8 @@ namespace Gestion_Entreprise
                                                 Convert.ToInt32(dicoTampon["salary"]),
                                                 companyName,
                                                 consultantsList);
+
+                        employeesList.Add(drh);
 
                         dicoTampon.Clear();
                     }
