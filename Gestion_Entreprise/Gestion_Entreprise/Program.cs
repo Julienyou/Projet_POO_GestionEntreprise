@@ -357,136 +357,162 @@ namespace Gestion_Entreprise
 
             Dictionary<string, Client> clientDico = new Dictionary<string, Client>();
             Dictionary<string, Manager> managerDico = new Dictionary<string, Manager>();
-            Dictionary<string, Dictionary<string,string>> dico = new Dictionary<string,Dictionary<string,string>>();
-            
+                        
             Dictionary<string, string> infoManager = new Dictionary<string, string>();
             Dictionary<string, string> infoConsultant = new Dictionary<string, string>();
             Dictionary<string, string> infoConsultation = new Dictionary<string, string>();
 
-            Director director;
-            DF df;
-            DRH drh;
+            Dictionary<string, string> dicoTampon = new Dictionary<string, string>();
 
-            string companyName = "";
-            string line = "";
+
+            Director director = null;
+            DF df = null;
+            DRH drh = null;
+
+            string companyName = null;
+            string line = null;
             StreamReader sr = null;
 
             try
             {
                 /*sr = new StreamReader(@"C:\Users\Julien\Desktop\ECAM\3BA\Programmation orientée objet\Projet\Projet_POO_GestionEntreprise\Gestion_Entreprise\entreprise.txt");*/
                 sr = new StreamReader(@"C:\git\Projet_POO_GestionEntreprise\Gestion_Entreprise\entreprise.txt");
-            
-
-                line = sr.ReadLine();
-
-                /*Take name company*/
-                if (line.Split(':')[0] == "CompanyName")
-                {
-                    companyName = line.Split(':')[1];
-                }
-
-                while (line != null)
-                {
-                    line = sr.ReadLine();
-
-                    /*Create client*/
-                    if (line == "[Client]")
-                    {
-                        line = sr.ReadLine();
-                        string name = line.Split(':')[1];
-
-                        clientDico.Add(name, new Client(name));
-                    }
-
-                    /*Create manager*/
-                    else if (line == "[Manager]")
-                    {
-                        line = sr.ReadLine();
-
-                        /*Take utils informations for manager*/
-                        while (line != null && line != "    [Consultant]")
-                        {
-                            infoManager.Add(line.Split(':')[0].Trim(), line.Split(':')[1].Trim());
-                            line = sr.ReadLine();
-                        }
-
-                        line = sr.ReadLine();
-
-                        /*While if we have anymore consultant*/
-                        while (line != null && line != "")
-                        {
-                            /*Take utils informations for consultant*/
-                            while (line != null && line != "        [Consultation]")
-                            {
-                                infoConsultant.Add(line.Split(':')[0].Trim(), line.Split(':')[1].Trim());
-                                line = sr.ReadLine();
-                            }
-
-                            line = sr.ReadLine();
-
-                            /*Take utils informations for consultation*/
-                            while (line != null && line != "" && line != "    [Consultant")
-                            {
-                                infoConsultation.Add(line.Split(':')[0].Trim(), line.Split(':')[1].Trim());
-                                line = sr.ReadLine();
-                            }
-
-                            Dictionary<string, Consultant> consultantDico = new Dictionary<string, Consultant>();
-
-                            /*created manager*/
-                            managerDico.Add(infoManager["lastname"],
-                                            new Manager(infoManager["firstname"],
-                                                        infoManager["lastname"],
-                                                        Convert.ToInt32(infoManager["salary"]),
-                                                        companyName));
-
-                            /*Created consultant with consultation*/
-                            consultantDico.Add(infoConsultant["lastname"],
-                                               new Consultant(infoConsultant["firstname"],
-                                                              infoConsultant["lastname"],
-                                                              Convert.ToInt32(infoConsultant["salary"]),
-                                                              companyName,
-                                                              managerDico[infoManager["lastname"]],
-                                               new Consultation(clientDico[infoConsultation["client"]],
-                                                                infoConsultation["startPeriode"],
-                                                                infoConsultation["endPeriode"])));
-
-                            /*Add consultant in manager*/
-                            managerDico[infoManager["lastname"]].AddConsultant(consultantDico[infoConsultant["lastname"]]);
-
-                            /*Add consultant at the list for the drh*/
-                            consultantsList.Add(consultantDico[infoConsultant["lastname"]]);
-
-                            infoConsultant.Clear();
-                            infoConsultation.Clear();
-                            infoManager.Clear();
-
-                            consultantDico.Clear();
-                        }
-                    }
-
-                    /*else if (line == "[Director]")
-                    {
-                        line = sr.ReadLine();
-
-                        int i = 0;
-                        while (i < 3)
-                        {
-
-
-                            i++;
-                        }
-                    }*/
-
-                }
-
             }
             catch
             {
                 Console.WriteLine("Erreur lors du traitement du fichier text, verifier l'incrementation");
             }
 
-            Console.WriteLine(managerDico["Atyla"].GetReport());            
+            line = sr.ReadLine();
+
+            /*Take name company*/
+            if (line.Split(':')[0] == "CompanyName")
+            {
+                companyName = line.Split(':')[1];
+            }
+
+            while (line != null)
+            {
+                line = sr.ReadLine();
+
+                /*Create client*/
+                if (line == "[Client]")
+                {
+                    line = sr.ReadLine();
+                    string name = line.Split(':')[1];
+
+                    clientDico.Add(name, new Client(name));
+                }
+
+                /*Create manager*/
+                else if (line == "[Manager]")
+                {
+                    line = sr.ReadLine();
+
+                    /*Take utils informations for manager*/
+                    while (line != null && line != "    [Consultant]")
+                    {
+                        infoManager.Add(line.Split(':')[0].Trim(), line.Split(':')[1].Trim());
+                        line = sr.ReadLine();
+                    }
+
+                    line = sr.ReadLine();
+
+                    /*While if we have anymore consultants*/
+                    while (line != null && line != "")
+                    {
+                        /*Take utils informations for consultant*/
+                        while (line != null && line != "        [Consultation]")
+                        {
+                            infoConsultant.Add(line.Split(':')[0].Trim(), line.Split(':')[1].Trim());
+                            line = sr.ReadLine();
+                        }
+
+                        line = sr.ReadLine();
+
+                        /*Take utils informations for consultation*/
+                        while (line != null && line != "" && line != "    [Consultant")
+                        {
+                            infoConsultation.Add(line.Split(':')[0].Trim(), line.Split(':')[1].Trim());
+                            line = sr.ReadLine();
+                        }
+
+                        Dictionary<string, Consultant> consultantDico = new Dictionary<string, Consultant>();
+
+                        /*created manager*/
+                        try
+                        {
+                            managerDico.Add(infoManager["lastname"],
+                                            new Manager(infoManager["firstname"],
+                                                        infoManager["lastname"],
+                                                        Convert.ToInt32(infoManager["salary"]),
+                                                        companyName));
+                        }
+                        catch
+                        {
+                            Console.WriteLine("Erreur lors de la création du manager, verifiez l'implementation");
+                        }
+
+                        /*Created consultant with consultation*/
+                        consultantDico.Add(infoConsultant["lastname"],
+                                            new Consultant(infoConsultant["firstname"],
+                                                            infoConsultant["lastname"],
+                                                            Convert.ToInt32(infoConsultant["salary"]),
+                                                            companyName,
+                                                            managerDico[infoManager["lastname"]],
+                                            new Consultation(clientDico[infoConsultation["client"]],
+                                                            infoConsultation["startPeriode"],
+                                                            infoConsultation["endPeriode"])));
+
+                        /*Add consultant in manager*/
+                        managerDico[infoManager["lastname"]].AddConsultant(consultantDico[infoConsultant["lastname"]]);
+
+                        /*Add consultant at the list for the drh*/
+                        consultantsList.Add(consultantDico[infoConsultant["lastname"]]);
+
+                        infoConsultant.Clear();
+                        infoConsultation.Clear();
+                        infoManager.Clear();
+
+                        consultantDico.Clear();
+                    }
+                }
+
+                else if (line == "[Director]")
+                {
+                    line = sr.ReadLine();
+
+                    int i = 0;
+                    while (i < 3)
+                    {
+                        dicoTampon.Add(line.Split(':')[0], line.Split(':')[1]);
+
+                        line = sr.ReadLine();
+
+                        i++;
+                    }
+
+                    try
+                    {
+                        director = new Director(dicoTampon["firstname"],
+                                                dicoTampon["lastname"],
+                                                Convert.ToInt32(dicoTampon["salary"]),
+                                                companyName);
+
+                        dicoTampon.Clear();
+                    }
+                    catch
+                    {
+                        Console.WriteLine("Erreur lors de la création du directeur, verifiez l'implementation");
+                    }
+                        
+                }
+
+            }
+
+           
+
+            Console.WriteLine(director.GetFirstname());            
 
             /*foreach(string truc in infoConsultation.Values)
             {
