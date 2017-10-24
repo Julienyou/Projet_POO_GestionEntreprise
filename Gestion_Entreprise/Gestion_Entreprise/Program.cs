@@ -342,7 +342,7 @@ namespace Gestion_Entreprise
                 report += String.Format("{0} {1}:\n", consult.GetLastname(), consult.GetFirstname());
                 report += "     *Client : " + consult.GetClient().GetName() + "\n";
                 report += "     *Periode : " + consult.GetConsultation().StartPeriode() + "-" +
-                                         consult.GetConsultation().EndPeriode() + "\n";
+                                               consult.GetConsultation().EndPeriode() + "\n";
             }
 
             return report;
@@ -369,19 +369,20 @@ namespace Gestion_Entreprise
             DF df = null;
             DRH drh = null;
 
+            StreamReader sr = null;
+
             string companyName = null;
             string line = null;
 
-            StreamReader sr = null;
-
+           
             try
             {
                 /*sr = new StreamReader(@"C:\Users\Julien\Desktop\ECAM\3BA\Programmation orientée objet\Projet\Projet_POO_GestionEntreprise\Gestion_Entreprise\entreprise.txt");*/
-                sr = new StreamReader(@"C:\git\Projet_POO_GestionEntreprise\Gestion_Entreprise\entreprise.txt");
+                sr = new StreamReader(@"C:\Users\le-so\Github\Projet_POO_GestionEntreprise\Gestion_Entreprise\entreprise.txt");
             }
             catch
             {
-                Console.WriteLine("Erreur lors du traitement du fichier text, verifier l'incrementation");
+                Console.WriteLine("Erreur lors du traitement du fichier text.");
             }
 
             line = sr.ReadLine();
@@ -411,13 +412,29 @@ namespace Gestion_Entreprise
                     line = sr.ReadLine();
 
                     /*Take utils informations for manager*/
-                    while (line != null && line != "    [Consultant]")
+                    int i = 0;
+                    while (i < 3)
                     {
-                        infoManager.Add(line.Split(':')[0].Trim(), line.Split(':')[1].Trim());
+                        infoManager.Add(line.Split(':')[0], line.Split(':')[1]);
+
                         line = sr.ReadLine();
+
+                        i++;
                     }
 
-                    line = sr.ReadLine();
+                    try
+                    {
+                        /*Created manager*/
+                        managerDico.Add(infoManager["lastname"],
+                                        new Manager(infoManager["firstname"],
+                                        infoManager["lastname"],
+                                        Convert.ToInt32(infoManager["salary"]),
+                                        companyName));
+                    }
+                    catch
+                    {
+                        Console.WriteLine("Erreur lors de la création du manager, verifiez l'implementation");
+                    }
 
                     /*While if we have anymore consultants*/
                     while (line != null && line != "")
@@ -425,34 +442,29 @@ namespace Gestion_Entreprise
                         /*Take utils informations for consultant*/
                         while (line != null && line != "        [Consultation]")
                         {
-                            infoConsultant.Add(line.Split(':')[0].Trim(), line.Split(':')[1].Trim());
-                            line = sr.ReadLine();
+                            if (line.Trim() == "[Consultant]") { line = sr.ReadLine(); }
+
+                            else
+                            {
+                                infoConsultant.Add(line.Split(':')[0].Trim(), line.Split(':')[1].Trim());
+                                line = sr.ReadLine();
+                            }
                         }
 
-                        line = sr.ReadLine();
-
+                        
                         /*Take utils informations for consultation*/
-                        while (line != null && line != "" && line != "    [Consultant")
+                        while (line != null && line != "" && line != "    [Consultant]")
                         {
-                            infoConsultation.Add(line.Split(':')[0].Trim(), line.Split(':')[1].Trim());
-                            line = sr.ReadLine();
+                            if (line.Trim() == "[Consultation]") { line = sr.ReadLine(); }
+
+                            else
+                            {
+                                infoConsultation.Add(line.Split(':')[0].Trim(), line.Split(':')[1].Trim());
+                                line = sr.ReadLine();
+                            }
                         }
 
                         Dictionary<string, Consultant> consultantDico = new Dictionary<string, Consultant>();
-
-                        /*created manager*/
-                        try
-                        {
-                            managerDico.Add(infoManager["lastname"],
-                                            new Manager(infoManager["firstname"],
-                                                        infoManager["lastname"],
-                                                        Convert.ToInt32(infoManager["salary"]),
-                                                        companyName));
-                        }
-                        catch
-                        {
-                            Console.WriteLine("Erreur lors de la création du manager, verifiez l'implementation");
-                        }
 
                         /*Created consultant with consultation*/
                         consultantDico.Add(infoConsultant["lastname"],
@@ -476,11 +488,12 @@ namespace Gestion_Entreprise
 
                         infoConsultant.Clear();
                         infoConsultation.Clear();
-                        infoManager.Clear();
 
                         consultantDico.Clear();
 
                     }
+
+                    infoManager.Clear();
                 }
 
                 else if (line == "[Director]")
@@ -541,18 +554,44 @@ namespace Gestion_Entreprise
                     }
                     catch
                     {
-                        Console.WriteLine("Erreur lors de la création du directeur, verifiez l'implementation");
+                        Console.WriteLine("Erreur lors de la création du directeur financier, verifiez l'implementation");
                     }
                 }
 
-            }           
+                else if (line == "[DRH]")
+                {
+                    line = sr.ReadLine();
 
-             Console.WriteLine(df.GetReport(2017));            
+                    int i = 0;
+                    while (i < 3)
+                    {
+                        dicoTampon.Add(line.Split(':')[0], line.Split(':')[1]);
 
-            /*foreach(string truc in infoConsultation.Values)
-            {
-                Console.WriteLine(truc);
-            }*/
+                        line = sr.ReadLine();
+
+                        i++;
+                    }
+
+                    try
+                    {
+                        /*Created director human resource*/
+                        drh = new DRH(dicoTampon["firstname"],
+                                                dicoTampon["lastname"],
+                                                Convert.ToInt32(dicoTampon["salary"]),
+                                                companyName,
+                                                consultantsList);
+
+                        dicoTampon.Clear();
+                    }
+                    catch
+                    {
+                        Console.WriteLine("Erreur lors de la création du directeur des resources humaines, verifiez l'implementation");
+                    }
+                }
+
+            }
+
+            Console.WriteLine(drh.GetReport());
             Console.ReadKey();
 
         }
