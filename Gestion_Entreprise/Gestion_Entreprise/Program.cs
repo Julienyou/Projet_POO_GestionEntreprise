@@ -70,6 +70,7 @@ namespace Gestion_Entreprise
         {
             foreach(Employee employee in employeeList)
             {
+                employee.ComputeSalary(2017);
                 report += String.Format("{0} {1} : {2}\n",employee.GetLastname(),employee.GetFirstname(),employee.GetSalary(year));
             }
             return report;
@@ -363,14 +364,14 @@ namespace Gestion_Entreprise
             Dictionary<string, string> infoConsultation = new Dictionary<string, string>();
 
             Dictionary<string, string> dicoTampon = new Dictionary<string, string>();
-
-
+            
             Director director = null;
             DF df = null;
             DRH drh = null;
 
             string companyName = null;
             string line = null;
+
             StreamReader sr = null;
 
             try
@@ -470,11 +471,15 @@ namespace Gestion_Entreprise
                         /*Add consultant at the list for the drh*/
                         consultantsList.Add(consultantDico[infoConsultant["lastname"]]);
 
+                        employeesList.Add(consultantDico[infoConsultant["lastname"]]);
+                        employeesList.Add(managerDico[infoManager["lastname"]]);
+
                         infoConsultant.Clear();
                         infoConsultation.Clear();
                         infoManager.Clear();
 
                         consultantDico.Clear();
+
                     }
                 }
 
@@ -494,6 +499,7 @@ namespace Gestion_Entreprise
 
                     try
                     {
+                        /*Created director*/
                         director = new Director(dicoTampon["firstname"],
                                                 dicoTampon["lastname"],
                                                 Convert.ToInt32(dicoTampon["salary"]),
@@ -505,14 +511,43 @@ namespace Gestion_Entreprise
                     {
                         Console.WriteLine("Erreur lors de la création du directeur, verifiez l'implementation");
                     }
-                        
+
                 }
 
-            }
+                else if (line == "[DF]")
+                {
+                    line = sr.ReadLine();
 
-           
+                    int i = 0;
+                    while (i < 3)
+                    {
+                        dicoTampon.Add(line.Split(':')[0], line.Split(':')[1]);
 
-            Console.WriteLine(director.GetFirstname());            
+                        line = sr.ReadLine();
+
+                        i++;
+                    }
+
+                    try
+                    {
+                        /*Created director financier*/
+                        df = new DF(dicoTampon["firstname"],
+                                                dicoTampon["lastname"],
+                                                Convert.ToInt32(dicoTampon["salary"]),
+                                                companyName,
+                                                employeesList);
+
+                        dicoTampon.Clear();
+                    }
+                    catch
+                    {
+                        Console.WriteLine("Erreur lors de la création du directeur, verifiez l'implementation");
+                    }
+                }
+
+            }           
+
+             Console.WriteLine(df.GetReport(2017));            
 
             /*foreach(string truc in infoConsultation.Values)
             {
@@ -627,19 +662,7 @@ namespace TestUnit
             Ludovic = new Gestion_Entreprise.Consultant("Ludovic", "Merel", 2500, "Name_company",Julien,consult);
             Julien.AddConsultant(Ludovic);
         }
-
-        [Test()]
-        public void TestGetFirstname()
-        {
-            Assert.That(Julien.GetFirstname(), Is.EqualTo("Julien"));
-        }
-
-        [Test()]
-        public void TestGetLastname()
-        {
-            Assert.That(Julien.GetLastname(), Is.EqualTo("Beard"));
-        }
-
+               
         [Test()]
         public void TestGetSalary()
         {
@@ -663,18 +686,6 @@ namespace TestUnit
         {
             Bastien = new Gestion_Entreprise.Director("Bastien", "Paul", 3000, "Name_company");
             Bastien.AddSalary(2017, 3400);
-        }
-
-        [Test()]
-        public void TestGetFirstname()
-        {
-            Assert.That(Bastien.GetFirstname(), Is.EqualTo("Bastien"));
-        }
-
-        [Test()]
-        public void TestGetLastname()
-        {
-            Assert.That(Bastien.GetLastname(), Is.EqualTo("Paul"));
         }
 
         [Test()]
