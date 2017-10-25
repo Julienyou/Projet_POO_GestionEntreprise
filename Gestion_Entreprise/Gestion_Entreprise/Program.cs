@@ -397,16 +397,22 @@ namespace Gestion_Entreprise
             this.salaryYear = salary;
         }
 
-        public void GetReport()
+        public void GetReport(string company)
         {
             string report = "";
 
             foreach (Consultant consult in consultants)
             {
-                report += String.Format("{0} {1}:\n", consult.GetLastname(), consult.GetFirstname());
-                report += "     *Client : " + consult.GetClient().GetName() + "\n";
-                report += "     *Periode : " + consult.GetConsultation().StartPeriode() + "-" +
-                                         consult.GetConsultation().EndPeriode() + "\n";
+                Consultation consultation = consult.GetConsultation();
+
+                if (consultation.GetClient().GetName() == company)
+                {
+                    report += String.Format("{0} {1}:\n", consult.GetLastname(), consult.GetFirstname());
+                    report += "     *Client : " + consult.GetClient().GetName() + "\n";
+                    report += "     *Periode : " + consult.GetConsultation().StartPeriode() + "-" +
+                                                   consult.GetConsultation().EndPeriode() + "\n";
+                }
+                
             }
 
             try
@@ -441,21 +447,22 @@ namespace Gestion_Entreprise
 
             Dictionary<string, Client> clientDico = new Dictionary<string, Client>();
             Dictionary<string, Manager> managerDico = new Dictionary<string, Manager>();
-                        
+
             Dictionary<string, string> infoManager = new Dictionary<string, string>();
             Dictionary<string, string> infoConsultant = new Dictionary<string, string>();
             Dictionary<string, string> infoConsultation = new Dictionary<string, string>();
 
             Dictionary<string, string> dicoTampon = new Dictionary<string, string>();
-            
+
             Director director = null;
             DF df = null;
             DRH drh = null;
 
+            StreamReader sr = null;
+
             string companyName = null;
             string line = null;
 
-            StreamReader sr = null;
 
             try
             {
@@ -485,7 +492,7 @@ namespace Gestion_Entreprise
                     line = sr.ReadLine();
                     string name = line.Split(':')[1];
 
-                    clientDico.Add(name, new Client(name));
+                    clientDico.Add(name.ToLower(), new Client(name));
                 }
 
                 /*Create manager*/
@@ -494,13 +501,31 @@ namespace Gestion_Entreprise
                     line = sr.ReadLine();
 
                     /*Take utils informations for manager*/
-                    while (line != null && line != "    [Consultant]")
+                    int i = 0;
+                    while (i < 3)
                     {
-                        infoManager.Add(line.Split(':')[0].Trim(), line.Split(':')[1].Trim());
+                        infoManager.Add(line.Split(':')[0], line.Split(':')[1]);
+
                         line = sr.ReadLine();
+
+                        i++;
                     }
 
-                    line = sr.ReadLine();
+                    try
+                    {
+                        /*Created manager*/
+                        managerDico.Add(infoManager["lastname"].ToLower(),
+                                        new Manager(infoManager["firstname"],
+                                        infoManager["lastname"],
+                                        Convert.ToInt32(infoManager["salary"]),
+                                        companyName));
+
+                        employeesList.Add(managerDico[infoManager["lastname"].ToLower()]);
+                    }
+                    catch
+                    {
+                        Console.WriteLine("Erreur lors de la création du manager, verifiez l'implementation");
+                    }
 
                     /*While if we have anymore consultants*/
                     while (line != null && line != "")
@@ -508,34 +533,29 @@ namespace Gestion_Entreprise
                         /*Take utils informations for consultant*/
                         while (line != null && line != "        [Consultation]")
                         {
-                            infoConsultant.Add(line.Split(':')[0].Trim(), line.Split(':')[1].Trim());
-                            line = sr.ReadLine();
+                            if (line.Trim() == "[Consultant]") { line = sr.ReadLine(); }
+
+                            else
+                            {
+                                infoConsultant.Add(line.Split(':')[0].Trim(), line.Split(':')[1].Trim());
+                                line = sr.ReadLine();
+                            }
                         }
 
-                        line = sr.ReadLine();
 
                         /*Take utils informations for consultation*/
-                        while (line != null && line != "" && line != "    [Consultant")
+                        while (line != null && line != "" && line != "    [Consultant]")
                         {
-                            infoConsultation.Add(line.Split(':')[0].Trim(), line.Split(':')[1].Trim());
-                            line = sr.ReadLine();
+                            if (line.Trim() == "[Consultation]") { line = sr.ReadLine(); }
+
+                            else
+                            {
+                                infoConsultation.Add(line.Split(':')[0].Trim(), line.Split(':')[1].Trim());
+                                line = sr.ReadLine();
+                            }
                         }
 
                         Dictionary<string, Consultant> consultantDico = new Dictionary<string, Consultant>();
-
-                        /*created manager*/
-                        try
-                        {
-                            managerDico.Add(infoManager["lastname"],
-                                            new Manager(infoManager["firstname"],
-                                                        infoManager["lastname"],
-                                                        Convert.ToInt32(infoManager["salary"]),
-                                                        companyName));
-                        }
-                        catch
-                        {
-                            Console.WriteLine("Erreur lors de la création du manager, verifiez l'implementation");
-                        }
 
                         /*Created consultant with consultation*/
                         consultantDico.Add(infoConsultant["lastname"],
@@ -543,27 +563,27 @@ namespace Gestion_Entreprise
                                                             infoConsultant["lastname"],
                                                             Convert.ToInt32(infoConsultant["salary"]),
                                                             companyName,
-                                                            managerDico[infoManager["lastname"]],
-                                            new Consultation(clientDico[infoConsultation["client"]],
+                                                            managerDico[infoManager["lastname"].ToLower()],
+                                            new Consultation(clientDico[infoConsultation["client"].ToLower()],
                                                             infoConsultation["startPeriode"],
                                                             infoConsultation["endPeriode"])));
 
                         /*Add consultant in manager*/
-                        managerDico[infoManager["lastname"]].AddConsultant(consultantDico[infoConsultant["lastname"]]);
+                        managerDico[infoManager["lastname"].ToLower()].AddConsultant(consultantDico[infoConsultant["lastname"]]);
 
                         /*Add consultant at the list for the drh*/
                         consultantsList.Add(consultantDico[infoConsultant["lastname"]]);
 
                         employeesList.Add(consultantDico[infoConsultant["lastname"]]);
-                        employeesList.Add(managerDico[infoManager["lastname"]]);
 
                         infoConsultant.Clear();
                         infoConsultation.Clear();
-                        infoManager.Clear();
 
                         consultantDico.Clear();
 
                     }
+
+                    infoManager.Clear();
                 }
 
                 else if (line == "[Director]")
@@ -587,6 +607,8 @@ namespace Gestion_Entreprise
                                                 dicoTampon["lastname"],
                                                 Convert.ToInt32(dicoTampon["salary"]),
                                                 companyName);
+
+                        employeesList.Add(director);
 
                         dicoTampon.Clear();
                     }
@@ -620,27 +642,131 @@ namespace Gestion_Entreprise
                                                 companyName,
                                                 employeesList);
 
+                        employeesList.Add(df);
+
                         dicoTampon.Clear();
                     }
                     catch
                     {
-                        Console.WriteLine("Erreur lors de la création du directeur, verifiez l'implementation");
+                        Console.WriteLine("Erreur lors de la création du directeur financier, verifiez l'implementation");
                     }
                 }
 
-            }           
+                else if (line == "[DRH]")
+                {
+                    line = sr.ReadLine();
 
-            df.GetReport(2017);
-            managerDico["Bourgignon"].GetReport();
-            //drh.GetReport();
-            
+                    int i = 0;
+                    while (i < 3)
+                    {
+                        dicoTampon.Add(line.Split(':')[0], line.Split(':')[1]);
 
-            /*foreach(string truc in infoConsultation.Values)
+                        line = sr.ReadLine();
+
+                        i++;
+                    }
+
+                    try
+                    {
+                        /*Created director human resource*/
+                        drh = new DRH(dicoTampon["firstname"],
+                                                dicoTampon["lastname"],
+                                                Convert.ToInt32(dicoTampon["salary"]),
+                                                companyName,
+                                                consultantsList);
+
+                        employeesList.Add(drh);
+
+                        dicoTampon.Clear();
+                    }
+                    catch
+                    {
+                        Console.WriteLine("Erreur lors de la création du directeur des resources humaines, verifiez l'implementation");
+                    }
+                }
+
+            }
+
+            Console.WriteLine("[Console] Vous pouvez generer trois types de rapport:");
+            Console.WriteLine("    *Rapport manager:");
+            Console.WriteLine("        Tapez manager ansi que 'GetReport' separer d'un point");
+            Console.WriteLine("    *Rapport Directeur financier:");
+            Console.WriteLine("        Tapez df ansi que 'GetReport' separer d'un point");
+            Console.WriteLine("    *Rapport Directeur des ressources humaines:");
+            Console.WriteLine("        Tapez drh ansi que 'GetReport' separer d'un point");
+            Console.WriteLine("La commande 'Done' permet de fermer le programme\n");
+
+            while(true)
             {
-                Console.WriteLine(truc);
-            }*/
-            Console.ReadKey();
+                Console.WriteLine("[Console] En attente d'une commande:");
+                string commande = Console.ReadLine();
 
+                if (commande.Split('.')[0].ToLower() == "drh")
+                {
+                    while (true)
+                    {
+                        Console.WriteLine("[Console] Donner moi une company");
+                        string company = Console.ReadLine().ToLower();
+
+                        try
+                        {
+                            Client client = clientDico[company];
+                            drh.GetReport(client.GetName());
+                            Console.WriteLine("[Console] Rapport créé.\n");
+
+                            break;
+                        }
+                        catch
+                        {
+                            Console.WriteLine("[Console] Le nom du client ne se trouve pas dans ma base de donnée, verifiez le\n");
+                        }
+                    }
+                    
+                }
+
+                else if (commande.Split('.')[0].ToLower() == "df")
+                {
+                    Console.WriteLine("[Console] Pour quelle année voulez-vous rediger le rapport?\n");
+                    int year = Convert.ToInt32(Console.ReadLine());
+
+                    df.GetReport(year);
+                    Console.WriteLine("[Console] Rapport créé.\n");
+                }
+
+                else if (commande.Split('.')[0].ToLower() == "manager")
+                {
+                    while (true)
+                    {
+                        Console.WriteLine("\n[Console] Quel est le nom du manager ?");
+                        string name = Console.ReadLine();
+
+                        try
+                        {
+                            Manager manager = managerDico[name.ToLower()];
+
+                            manager.GetReport();
+                            Console.WriteLine("[Console] Rapport créé.\n");
+
+                            break;
+                        }
+                        catch
+                        {
+                            Console.WriteLine("[Console] Le nom ne figure pas dans ma base de donnée, verifiez le\n");
+                        }
+                    }
+
+                }
+
+                else if (commande.ToLower() == "done")
+                {
+                    break;
+                }
+
+                else
+                {
+                    Console.WriteLine("[Console] Je n'ai pas compris votre demande\n");
+                }
+            }
         }
     }
 }
@@ -710,12 +836,6 @@ namespace TestUnit
             Pascal = new Gestion_Entreprise.DF("Pascal", "Willems", 120000, "Name_company", employeeList);
         }
 
-        [Test()]
-        public void TestComputeSalary()
-        {
-            Assert.That(Pascal.ComputeSalary(2017), Is.EqualTo(120000));
-        }
-
         /*Test bug*/
         /*[Test()]
         public void TestGetReport()
@@ -748,12 +868,6 @@ namespace TestUnit
             Ludovic = new Gestion_Entreprise.Consultant("Ludovic", "Merel", 2500, "Name_company",Julien,consult);
             Julien.AddConsultant(Ludovic);
         }
-               
-        [Test()]
-        public void TestGetSalary()
-        {
-            Assert.That(Julien.GetSalary(2017), Is.EqualTo(3400));
-        }
 
         /*   [Test()]
            public void TestGetReport()
@@ -772,12 +886,6 @@ namespace TestUnit
         {
             Bastien = new Gestion_Entreprise.Director("Bastien", "Paul", 3000, "Name_company");
             Bastien.AddSalary(2017, 3400);
-        }
-
-        [Test()]
-        public void TestGetSalary()
-        {
-            Assert.That(Bastien.GetSalary(2017), Is.EqualTo(3400));
         }
 
         /*   [Test()]
@@ -923,14 +1031,7 @@ namespace TestUnit
             
         }
 
-        [Test()]
-        public void TestComputeSalary()
-        {
-            Assert.That(drh.ComputeSalary(2017), Is.EqualTo(70000));
-        }
-
         /*Test bug*/
-
         /*[Test()]
         public void TestGetReport()
         {

@@ -18,6 +18,14 @@ salary:60000
 	client:Julien
 	startPeriode:20/10/17
 	endPeriode:05/11/17
+    [Consultant]
+    lastname:Eagle
+    firstname:Thomas
+    salary:35000
+        [Consultation]
+	client:Ottis2000
+	startPeriode:30/10/17
+	endPeriode:05/12/17
 
 [Manager]
 lastname:Atyla
