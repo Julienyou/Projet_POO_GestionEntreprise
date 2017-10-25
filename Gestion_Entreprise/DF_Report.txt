@@ -1,24 +1,18 @@
-DF : Feelters Arnaud : 35855
-Bourgignon Maxime : 60500
-Kyo Pinochio : 35855
-Atyla Legrand : 60500
+Le directeur financier ayant fait le rapport est 
 
+DRH :
+	
 
-DRH : Feelters Arnaud : 35855
-Bourgignon Maxime : 60500
-Kyo Pinochio : 35855
-Atyla Legrand : 60500
+Directeur :
+	
 
+Manager :
+	Bourgignon Maxime : 60500€
+	Atyla Legrand : 60500€
+	
 
-Manager : Feelters Arnaud : 35855
-Bourgignon Maxime : 60500
-Kyo Pinochio : 35855
-Atyla Legrand : 60500
-
-
-Consultant : Feelters Arnaud : 35855
-Bourgignon Maxime : 60500
-Kyo Pinochio : 35855
-Atyla Legrand : 60500
-
+Consultant :
+	Feelters Arnaud : 35855€
+	Kyo Pinochio : 35855€
+	
 

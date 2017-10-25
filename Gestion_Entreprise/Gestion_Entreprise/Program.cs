@@ -54,55 +54,51 @@ namespace Gestion_Entreprise
     class DF : Director
     {
         private List<Employee> employeeList;
-        private List<string> managerList = new List<string>();
-        private List<string> consultantList = new List<string>();
-        private List<string> dfList = new List<string>();
-        private List<string> drhList = new List<string>();
 
-        private string report = "";
+        private string report_manager = "";
+        private string report_consultant = "";
+        private string report_df = "";
+        private string report_drh = "";
+        private string report_director = "";
 
         public DF(string firstname, string lastname, int salary, string company, List<Employee> employeeList) : base(firstname, lastname, salary, company)
         {
             this.employeeList = employeeList;
         }
 
-        public int ComputeSalary()
-        {
-            return salary;
-        }
-
        public void GetReport(int year)
         {
             foreach(Employee employee in employeeList)
-            {                
-                if (employee.GetType() == typeof(Gestion_Entreprise.Manager))
+            {
+                if (employee is Manager)
                 {                   
                     employee.ComputeSalary(2017);
-                    report += String.Format("{0} {1} : {2}\n", employee.GetLastname(), employee.GetFirstname(), employee.GetSalary(2017));
-                    managerList.Add(report);
+                    report_manager += String.Format("{0} {1} : {2}€\n\t", employee.GetLastname(), employee.GetFirstname(), employee.GetSalary(2017));
                 }
 
                 if (employee is Consultant)
                 {
                     employee.ComputeSalary(2017);
-                    report += String.Format("{0} {1} : {2}\n", employee.GetLastname(), employee.GetFirstname(), employee.GetSalary(2017));
-                    consultantList.Add(report);
+                    report_consultant += String.Format("{0} {1} : {2}€\n\t", employee.GetLastname(), employee.GetFirstname(), employee.GetSalary(2017));
                 }
 
                 if (employee is DF)
                 {
                     employee.ComputeSalary(2017);
-                    report += String.Format("{0} {1} : {2}\n", employee.GetLastname(), employee.GetFirstname(), employee.GetSalary(2017));
-                    dfList.Add(report);
+                    report_df += String.Format("{0} {1} : {2}€\n\t", employee.GetLastname(), employee.GetFirstname(), employee.GetSalary(2017));
                 }
 
                 if (employee is DRH)
                 {
                     employee.ComputeSalary(2017);
-                    report += String.Format("{0} {1} : {2}\n", employee.GetLastname(), employee.GetFirstname(), employee.GetSalary(2017));
-                    drhList.Add(report);
+                    report_drh += String.Format("{0} {1} : {2}€\n\t", employee.GetLastname(), employee.GetFirstname(), employee.GetSalary(2017));
                 }
 
+                if (employee is Director)
+                {
+                    employee.ComputeSalary(2017);
+                    report_drh += String.Format("{0} {1} : {2}€\n\t", employee.GetLastname(), employee.GetFirstname(), employee.GetSalary(2017));
+                }
             }
 
             try
@@ -112,13 +108,15 @@ namespace Gestion_Entreprise
                 StreamWriter sw = new StreamWriter(@"C:\Users\Julien\Desktop\ECAM\3BA\Programmation orientée objet\Projet\Projet_POO_GestionEntreprise\Gestion_Entreprise\DF_Report.txt");
 
                 //Write a line of text
-                sw.WriteLine("DF :\r {0}\n",report);
+                sw.WriteLine("Le directeur financier ayant fait le rapport est {0}\n", report_df);
 
-                sw.WriteLine("DRH :\r {0}\n", report);
+                sw.WriteLine("DRH :\n\t{0}\n", report_drh);
 
-                sw.WriteLine("Manager :\r {0}\n", report);
+                sw.WriteLine("Directeur :\n\t{0}\n", report_director);
 
-                sw.WriteLine("Consultant :\r {0}\n", report);
+                sw.WriteLine("Manager :\n\t{0}\n", report_manager);
+
+                sw.WriteLine("Consultant :\n\t{0}\n", report_consultant);
 
                 //Close the file
                 sw.Close();
@@ -155,11 +153,6 @@ namespace Gestion_Entreprise
         public void AddConsultant(Consultant consultant)
         {
             consultants.Add(consultant);
-        }
-
-        public void RemoveConsultant(Consultant consultant)
-        {
-            consultants.Remove(consultant);
         }
 
         public void GetReport()
@@ -201,6 +194,7 @@ namespace Gestion_Entreprise
 
         public override int ComputeSalary(int year)
         {
+            base.AddSalary(year, salary);
             return salary;
         }
     }
@@ -392,7 +386,7 @@ namespace Gestion_Entreprise
         }
     }
 
-    class DRH:Employee
+    class DRH:Director
     {
         private List<Consultant> consultants;
         private int salaryYear;
@@ -401,12 +395,6 @@ namespace Gestion_Entreprise
         {
             this.consultants = consultants;
             this.salaryYear = salary;
-        }
-
-        public override int ComputeSalary(int year)
-        {
-            base.AddSalary(year, salaryYear);
-            return salaryYear;
         }
 
         public void GetReport()
@@ -725,7 +713,7 @@ namespace TestUnit
         [Test()]
         public void TestComputeSalary()
         {
-            Assert.That(Pascal.ComputeSalary(), Is.EqualTo(120000));
+            Assert.That(Pascal.ComputeSalary(2017), Is.EqualTo(120000));
         }
 
         /*Test bug*/
