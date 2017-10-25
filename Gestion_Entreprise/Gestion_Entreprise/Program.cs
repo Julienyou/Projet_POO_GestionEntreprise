@@ -105,7 +105,7 @@ namespace Gestion_Entreprise
             {
 
                 //Pass the filepath and filename to the StreamWriter Constructor
-                StreamWriter sw = new StreamWriter('@' + path + @"\DF_Report.txt");
+                StreamWriter sw = new StreamWriter(path + @"\DF_Report.txt");
 
                 //Write a line of text
                 sw.WriteLine("Le directeur financier ayant fait le rapport est {0}\n", report_df);
@@ -127,7 +127,7 @@ namespace Gestion_Entreprise
             }
             finally
             {
-                Console.WriteLine("Le rapport du Directeur financier a été généré");
+                Console.WriteLine("[Console] Le rapport du Directeur financier a été généré\n");
             }
         }
     }
@@ -166,7 +166,7 @@ namespace Gestion_Entreprise
             {
 
                 //Pass the filepath and filename to the StreamWriter Constructor
-                StreamWriter sw = new StreamWriter('@' + path + @"\Manager_Report.txt");
+                StreamWriter sw = new StreamWriter(path + @"\Manager_Report.txt");
 
                 //Write a line of text
                 sw.WriteLine(report);
@@ -180,7 +180,7 @@ namespace Gestion_Entreprise
             }
             finally
             {
-                Console.WriteLine("Le rapport du Manager a été généré");
+                Console.WriteLine("[Console] Le rapport du Manager a été généré\n");
             }
         }
         
@@ -419,7 +419,7 @@ namespace Gestion_Entreprise
             {
 
                 //Pass the filepath and filename to the StreamWriter Constructor
-                StreamWriter sw = new StreamWriter('@' + path + @"\DRH_Report.txt");
+                StreamWriter sw = new StreamWriter(path + @"\DRH_Report.txt");
 
                 //Write a line of text
                 sw.WriteLine(report);
@@ -433,7 +433,7 @@ namespace Gestion_Entreprise
             }
             finally
             {
-                Console.WriteLine("Le rapport du Directeur des ressources humaines a été généré");
+                Console.WriteLine("[Console] Le rapport du Directeur des ressources humaines a été généré\n");
             }
         }
     }
@@ -464,11 +464,7 @@ namespace Gestion_Entreprise
             string line = null;
 
             string path = @"..\..\..";
-
-            //Console.WriteLine("[Console] Fournissez moi un chemin vers le fichier texte");
-            //path = Console.ReadLine();
-
-
+            
             try
             {
                 sr = new StreamReader(path + @"\entreprise.txt");                
@@ -716,7 +712,6 @@ namespace Gestion_Entreprise
                         {
                             Client client = clientDico[company];
                             drh.GetReport(client.GetName(), path);
-                            Console.WriteLine("[Console] Rapport créé.\n");
 
                             break;
                         }
@@ -734,7 +729,6 @@ namespace Gestion_Entreprise
                     int year = Convert.ToInt32(Console.ReadLine());
 
                     df.GetReport(year, path);
-                    Console.WriteLine("[Console] Rapport créé.\n");
                 }
 
                 else if (commande.Split('.')[0].ToLower() == "manager")
@@ -749,7 +743,6 @@ namespace Gestion_Entreprise
                             Manager manager = managerDico[name.ToLower()];
 
                             manager.GetReport(path);
-                            Console.WriteLine("[Console] Rapport créé.\n");
 
                             break;
                         }
