@@ -1,18 +1,24 @@
-Le directeur financier ayant fait le rapport est 
+Le directeur financier ayant fait le rapport est Lurkin Quentin : 70000€
+	
 
 DRH :
+	Combefis Sebastien : 150000€
+	Lurkin Quentin : 70000€
+	Machin Bob : 60000€
+	Machin Bob : 60000€
 	
 
 Directeur :
 	
 
 Manager :
-	Bourgignon Maxime : 60500€
+	Bourgignon Maxime : 61000€
 	Atyla Legrand : 60500€
 	
 
 Consultant :
-	Feelters Arnaud : 35855€
+	Feelters Arnaud : 35860€
+	Eagle Thomas : 35860€
 	Kyo Pinochio : 35855€
 	
 
