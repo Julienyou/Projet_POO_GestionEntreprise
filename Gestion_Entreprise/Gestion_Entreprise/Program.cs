@@ -684,7 +684,6 @@ namespace Gestion_Entreprise
                         Console.WriteLine("Erreur lors de la création du directeur des resources humaines, verifiez l'implementation");
                     }
                 }
-
             }
 
             Console.WriteLine("[Console] Vous pouvez generer trois types de rapport:");
@@ -700,8 +699,9 @@ namespace Gestion_Entreprise
             {
                 Console.WriteLine("[Console] En attente d'une commande:");
                 string commande = Console.ReadLine();
+                commande += ".";
 
-                if (commande.Split('.')[0].ToLower() == "drh")
+                if (commande.Split('.')[0].ToLower() == "drh" && commande.Split('.')[1].ToLower() == "getreport")
                 {
                     while (true)
                     {
@@ -723,7 +723,7 @@ namespace Gestion_Entreprise
                     
                 }
 
-                else if (commande.Split('.')[0].ToLower() == "df")
+                else if (commande.Split('.')[0].ToLower() == "df" && commande.Split('.')[1].ToLower() == "getreport")
                 {
                     Console.WriteLine("[Console] Pour quelle année voulez-vous rediger le rapport?\n");
                     int year = Convert.ToInt32(Console.ReadLine());
@@ -731,7 +731,7 @@ namespace Gestion_Entreprise
                     df.GetReport(year, path);
                 }
 
-                else if (commande.Split('.')[0].ToLower() == "manager")
+                else if (commande.Split('.')[0].ToLower() == "manager" && commande.Split('.')[1].ToLower() == "getreport")
                 {
                     while (true)
                     {
@@ -754,7 +754,7 @@ namespace Gestion_Entreprise
 
                 }
 
-                else if (commande.ToLower() == "done")
+                else if (commande.ToLower() == "done.")
                 {
                     break;
                 }
