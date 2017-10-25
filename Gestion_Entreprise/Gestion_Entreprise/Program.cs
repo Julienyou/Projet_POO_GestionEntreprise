@@ -66,7 +66,7 @@ namespace Gestion_Entreprise
             this.employeeList = employeeList;
         }
 
-       public void GetReport(int year)
+        public void GetReport(int year, string path)
         {
             foreach(Employee employee in employeeList)
             {
@@ -105,7 +105,7 @@ namespace Gestion_Entreprise
             {
 
                 //Pass the filepath and filename to the StreamWriter Constructor
-                StreamWriter sw = new StreamWriter(@"C:\Users\Julien\Desktop\ECAM\3BA\Programmation orientée objet\Projet\Projet_POO_GestionEntreprise\Gestion_Entreprise\DF_Report.txt");
+                StreamWriter sw = new StreamWriter(path + @"\DF_Report.txt");
 
                 //Write a line of text
                 sw.WriteLine("Le directeur financier ayant fait le rapport est {0}\n", report_df);
@@ -127,7 +127,7 @@ namespace Gestion_Entreprise
             }
             finally
             {
-                Console.WriteLine("Le rapport du Directeur financier a été généré");
+                Console.WriteLine("[Console] Le rapport du Directeur financier a été généré\n");
             }
         }
     }
@@ -155,7 +155,7 @@ namespace Gestion_Entreprise
             consultants.Add(consultant);
         }
 
-        public void GetReport()
+        public void GetReport(string path)
         {
             foreach(Consultant consultant in consultants)
             {
@@ -166,7 +166,7 @@ namespace Gestion_Entreprise
             {
 
                 //Pass the filepath and filename to the StreamWriter Constructor
-                StreamWriter sw = new StreamWriter(@"C:\Users\Julien\Desktop\ECAM\3BA\Programmation orientée objet\Projet\Projet_POO_GestionEntreprise\Gestion_Entreprise\Manager_Report.txt");
+                StreamWriter sw = new StreamWriter(path + @"\Manager_Report.txt");
 
                 //Write a line of text
                 sw.WriteLine(report);
@@ -180,7 +180,7 @@ namespace Gestion_Entreprise
             }
             finally
             {
-                Console.WriteLine("Le rapport du Manager a été généré");
+                Console.WriteLine("[Console] Le rapport du Manager a été généré\n");
             }
         }
         
@@ -397,7 +397,7 @@ namespace Gestion_Entreprise
             this.salaryYear = salary;
         }
 
-        public void GetReport(string company)
+        public void GetReport(string company, string path)
         {
             string report = "";
 
@@ -419,7 +419,7 @@ namespace Gestion_Entreprise
             {
 
                 //Pass the filepath and filename to the StreamWriter Constructor
-                StreamWriter sw = new StreamWriter(@"C:\Users\Julien\Desktop\ECAM\3BA\Programmation orientée objet\Projet\Projet_POO_GestionEntreprise\Gestion_Entreprise\DRH_Report.txt");
+                StreamWriter sw = new StreamWriter(path + @"\DRH_Report.txt");
 
                 //Write a line of text
                 sw.WriteLine(report);
@@ -433,7 +433,7 @@ namespace Gestion_Entreprise
             }
             finally
             {
-                Console.WriteLine("Le rapport du Directeur des ressources humaines a été généré");
+                Console.WriteLine("[Console] Le rapport du Directeur des ressources humaines a été généré\n");
             }
         }
     }
@@ -463,11 +463,11 @@ namespace Gestion_Entreprise
             string companyName = null;
             string line = null;
 
+            string path = @"C:\git\Projet_POO_GestionEntreprise\Gestion_Entreprise";
 
             try
             {
-                sr = new StreamReader(@"C:\Users\Julien\Desktop\ECAM\3BA\Programmation orientée objet\Projet\Projet_POO_GestionEntreprise\Gestion_Entreprise\entreprise.txt");
-                /*sr = new StreamReader(@"C:\git\Projet_POO_GestionEntreprise\Gestion_Entreprise\entreprise.txt");*/
+                sr = new StreamReader(path + @"\entreprise.txt");
             }
             catch
             {
@@ -711,8 +711,7 @@ namespace Gestion_Entreprise
                         try
                         {
                             Client client = clientDico[company];
-                            drh.GetReport(client.GetName());
-                            Console.WriteLine("[Console] Rapport créé.\n");
+                            drh.GetReport(client.GetName(), path);
 
                             break;
                         }
@@ -729,8 +728,7 @@ namespace Gestion_Entreprise
                     Console.WriteLine("[Console] Pour quelle année voulez-vous rediger le rapport?\n");
                     int year = Convert.ToInt32(Console.ReadLine());
 
-                    df.GetReport(year);
-                    Console.WriteLine("[Console] Rapport créé.\n");
+                    df.GetReport(year, path);
                 }
 
                 else if (commande.Split('.')[0].ToLower() == "manager")
@@ -744,8 +742,7 @@ namespace Gestion_Entreprise
                         {
                             Manager manager = managerDico[name.ToLower()];
 
-                            manager.GetReport();
-                            Console.WriteLine("[Console] Rapport créé.\n");
+                            manager.GetReport(path);
 
                             break;
                         }
