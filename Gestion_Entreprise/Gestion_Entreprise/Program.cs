@@ -318,16 +318,22 @@ namespace Gestion_Entreprise
             this.salaryYear = salary;
         }
 
-        public string GetReport()
+        public string GetReport(string company)
         {
             string report = "";
 
             foreach (Consultant consult in consultants)
             {
-                report += String.Format("{0} {1}:\n", consult.GetLastname(), consult.GetFirstname());
-                report += "     *Client : " + consult.GetClient().GetName() + "\n";
-                report += "     *Periode : " + consult.GetConsultation().StartPeriode() + "-" +
-                                               consult.GetConsultation().EndPeriode() + "\n";
+                Consultation consultation = consult.GetConsultation();
+
+                if (consultation.GetClient().GetName() == company)
+                {
+                    report += String.Format("{0} {1}:\n", consult.GetLastname(), consult.GetFirstname());
+                    report += "     *Client : " + consult.GetClient().GetName() + "\n";
+                    report += "     *Periode : " + consult.GetConsultation().StartPeriode() + "-" +
+                                                   consult.GetConsultation().EndPeriode() + "\n";
+                }
+                
             }
 
             return report;
@@ -388,7 +394,7 @@ namespace Gestion_Entreprise
                     line = sr.ReadLine();
                     string name = line.Split(':')[1];
 
-                    clientDico.Add(name, new Client(name));
+                    clientDico.Add(name.ToLower(), new Client(name));
                 }
 
                 /*Create manager*/
@@ -460,7 +466,7 @@ namespace Gestion_Entreprise
                                                             Convert.ToInt32(infoConsultant["salary"]),
                                                             companyName,
                                                             managerDico[infoManager["lastname"].ToLower()],
-                                            new Consultation(clientDico[infoConsultation["client"]],
+                                            new Consultation(clientDico[infoConsultation["client"].ToLower()],
                                                             infoConsultation["startPeriode"],
                                                             infoConsultation["endPeriode"])));
 
@@ -599,8 +605,25 @@ namespace Gestion_Entreprise
 
                 if (commande.Split('.')[0].ToLower() == "drh")
                 {
-                    Console.WriteLine("\n" + drh.GetReport());
-                    Console.WriteLine("[Console] Rapport créé.\n");
+                    while (true)
+                    {
+                        Console.WriteLine("[Console] Donner moi une company");
+                        string company = Console.ReadLine().ToLower();
+
+                        try
+                        {
+                            Client client = clientDico[company];
+                            Console.WriteLine("\n" + drh.GetReport(client.GetName()));
+                            Console.WriteLine("[Console] Rapport créé.\n");
+
+                            break;
+                        }
+                        catch
+                        {
+                            Console.WriteLine("[Console] Le nom du client ne se trouve pas dans ma base de donnée, verifiez le\n");
+                        }
+                    }
+                    
                 }
 
                 else if (commande.Split('.')[0].ToLower() == "df")
