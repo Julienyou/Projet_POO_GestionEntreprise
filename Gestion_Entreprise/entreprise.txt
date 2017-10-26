@@ -45,14 +45,14 @@ lastname:Combefis
 firstname:Sebastien
 salary:150000
 
-[DF]
-lastname:Lurkin
-firstname:Quentin
-salary:70000
-
 [DRH]
 lastname:Machin
 firstname:Bob
 salary:60000
+
+[DF]
+lastname:Lurkin
+firstname:Quentin
+salary:70000
 
 
