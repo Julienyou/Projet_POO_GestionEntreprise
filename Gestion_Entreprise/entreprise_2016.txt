@@ -1,21 +1,21 @@
 CompanyName:Julien&C0
 
 [Client]
-name:Julien
+name:Ludovic
 
 [Client]
 name:Ottis2000
 
 [Manager]
-lastname:Bourgignon
-firstname:Maxime
+lastname:Bou
+firstname:Rayan
 salary:60000
     [Consultant]
-    lastname:Feelters
+    lastname:Peeters
     firstname:Arnaud
     salary:35000
         [Consultation]
-	client:Julien
+	client:Ludovic
 	startPeriode:20/10/17
 	endPeriode:05/11/17
     [Consultant]
@@ -41,17 +41,17 @@ salary:60000
         endPeriode:22/02/17
 
 [Director]
-lastname:Combefis
-firstname:Sebastien
+lastname:Beard
+firstname:Julien
 salary:150000
 
 [DF]
-lastname:Lurkin
-firstname:Quentin
+lastname:Bertrand
+firstname:Sam
 salary:70000
 
 [DRH]
-lastname:Machin
+lastname:Marley
 firstname:Bob
 salary:60000
 

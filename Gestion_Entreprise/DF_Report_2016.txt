@@ -1,0 +1,22 @@
+Le directeur financier ayant fait le rapport est Bertrand Sam : 70000€
+	
+
+DRH :
+	Marley Bob : 60000€
+	
+
+Directeur :
+	Beard Julien : 150000€
+	
+
+Manager :
+	Bou Rayan : 61000€
+	Atyla Legrand : 60500€
+	
+
+Consultant :
+	Peeters Arnaud : 35860€
+	Eagle Thomas : 35860€
+	Kyo Pinochio : 35855€
+	
+

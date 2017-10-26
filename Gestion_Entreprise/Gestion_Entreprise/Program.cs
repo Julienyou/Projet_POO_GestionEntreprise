@@ -66,7 +66,7 @@ namespace Gestion_Entreprise
             this.employeeList = employeeList;
         }
 
-       public void GetReport(int year, string path)
+       public void GetReport(string year, string path)
         {
             foreach(Employee employee in employeeList)
             {
@@ -105,7 +105,7 @@ namespace Gestion_Entreprise
             {
 
                 //Pass the filepath and filename to the StreamWriter Constructor
-                StreamWriter sw = new StreamWriter(path + @"\DF_Report.txt");
+                StreamWriter sw = new StreamWriter(path + @"\DF_Report_" + year + ".txt");
 
                 //Write a line of text
                 sw.WriteLine("Le directeur financier ayant fait le rapport est {0}\n", report_df);
@@ -155,7 +155,7 @@ namespace Gestion_Entreprise
             consultants.Add(consultant);
         }
 
-        public void GetReport(string path)
+        public void GetReport(string year, string path)
         {
             foreach(Consultant consultant in consultants)
             {
@@ -166,7 +166,7 @@ namespace Gestion_Entreprise
             {
 
                 //Pass the filepath and filename to the StreamWriter Constructor
-                StreamWriter sw = new StreamWriter(path + @"\Manager_Report.txt");
+                StreamWriter sw = new StreamWriter(path + @"\Manager_Report_" + year + ".txt");
 
                 //Write a line of text
                 sw.WriteLine(report);
@@ -397,7 +397,7 @@ namespace Gestion_Entreprise
             this.salaryYear = salary;
         }
 
-        public void GetReport(string company, string path)
+        public void GetReport(string company, string year, string path)
         {
             string report = "";
 
@@ -419,7 +419,7 @@ namespace Gestion_Entreprise
             {
 
                 //Pass the filepath and filename to the StreamWriter Constructor
-                StreamWriter sw = new StreamWriter(path + @"\DRH_Report.txt");
+                StreamWriter sw = new StreamWriter(path + @"\DRH_Report_" + year +".txt");
 
                 //Write a line of text
                 sw.WriteLine(report);
@@ -462,16 +462,21 @@ namespace Gestion_Entreprise
 
             string companyName = null;
             string line = null;
-
+            
             string path = @"..\..\..";
+
+            Console.WriteLine("Veuillez saisir l'année des rapports que vous souhaitez :");
+            string year = Console.ReadLine();
             
             try
             {
-                sr = new StreamReader(path + @"\entreprise.txt");                
+                sr = new StreamReader(path + @"\entreprise_" + year + ".txt");                
             }
             catch
             {
-                Console.WriteLine("Erreur lors du traitement du fichier texte, verifier l'incrementation");
+                Console.WriteLine("Erreur lors du traitement du fichier texte, verifier l'incrementation ou l'annee donnee");
+                Console.ReadKey();
+                Environment.Exit(0);
             }
 
             line = sr.ReadLine();
@@ -711,7 +716,7 @@ namespace Gestion_Entreprise
                         try
                         {
                             Client client = clientDico[company];
-                            drh.GetReport(client.GetName(), path);
+                            drh.GetReport(client.GetName(),year, path);
 
                             break;
                         }
@@ -725,9 +730,6 @@ namespace Gestion_Entreprise
 
                 else if (commande.Split('.')[0].ToLower() == "df" && commande.Split('.')[1].ToLower() == "getreport")
                 {
-                    Console.WriteLine("[Console] Pour quelle année voulez-vous rediger le rapport?\n");
-                    int year = Convert.ToInt32(Console.ReadLine());
-
                     df.GetReport(year, path);
                 }
 
@@ -742,7 +744,7 @@ namespace Gestion_Entreprise
                         {
                             Manager manager = managerDico[name.ToLower()];
 
-                            manager.GetReport(path);
+                            manager.GetReport(year, path);
 
                             break;
                         }
