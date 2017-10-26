@@ -166,7 +166,7 @@ namespace Gestion_Entreprise
             {
 
                 //Pass the filepath and filename to the StreamWriter Constructor
-                StreamWriter sw = new StreamWriter(path + @"\Manager_Report_" + year + ".txt");
+                StreamWriter sw = new StreamWriter(path + @"\Manager_Report_" + this.Lastname + "_" + year + ".txt");
 
                 //Write a line of text
                 sw.WriteLine(report);
