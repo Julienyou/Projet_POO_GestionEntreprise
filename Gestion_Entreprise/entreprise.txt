@@ -37,8 +37,10 @@ salary:60000
     salary:35000
         [Consultation]
         client:Ottis2000
-        startPeriode:21/02/1995
-        endPeriode:22/02/1995
+        startPeriode:21/02/17
+        endPeriode:22/02/17
+
+
 
 [Director]
 lastname:Combefis

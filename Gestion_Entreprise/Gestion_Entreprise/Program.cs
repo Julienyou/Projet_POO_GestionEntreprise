@@ -94,10 +94,10 @@ namespace Gestion_Entreprise
                     report_drh += String.Format("{0} {1} : {2}€\n\t", employee.GetLastname(), employee.GetFirstname(), employee.GetSalary(2017));
                 }
 
-                if (employee is Director)
+                if (employee is Director && !(employee is DRH) && !(employee is DF))
                 {
                     employee.ComputeSalary(2017);
-                    report_drh += String.Format("{0} {1} : {2}€\n\t", employee.GetLastname(), employee.GetFirstname(), employee.GetSalary(2017));
+                    report_director += String.Format("{0} {1} : {2}€\n\t", employee.GetLastname(), employee.GetFirstname(), employee.GetSalary(2017));
                 }
             }
 

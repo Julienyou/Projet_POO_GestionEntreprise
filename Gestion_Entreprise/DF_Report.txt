@@ -2,13 +2,11 @@ Le directeur financier ayant fait le rapport est Lurkin Quentin : 70000€
 	
 
 DRH :
-	Combefis Sebastien : 150000€
-	Lurkin Quentin : 70000€
-	Machin Bob : 60000€
 	Machin Bob : 60000€
 	
 
 Directeur :
+	Combefis Sebastien : 150000€
 	
 
 Manager :
